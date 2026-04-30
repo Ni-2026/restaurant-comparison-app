@@ -1,5 +1,5 @@
-# pipeline.py
 # Nizhen He — ITM352 Restaurant Comparison App
+# Date Updated - April 30, 2026
 # Cleans and structures raw scraped data using Pandas
 
 import pandas as pd

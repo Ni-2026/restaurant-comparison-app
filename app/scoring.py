@@ -1,5 +1,5 @@
-# scoring.py
 # Nizhen He — ITM352 Restaurant Comparison App
+# Date Updated - April 30, 2026
 # Composite scoring algorithm: ranks restaurants by rating, reviews, and price fit
 
 import pandas as pd

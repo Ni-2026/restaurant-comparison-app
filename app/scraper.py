@@ -1,5 +1,5 @@
-# scraper.py
 # Nizhen He — ITM352 Restaurant Comparison App
+# Date Updated - April 30, 2026
 # Scrapes Yelp search results using Selenium (page load) + BeautifulSoup (parsing)
 
 import time

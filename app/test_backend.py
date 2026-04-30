@@ -1,5 +1,5 @@
-# test_backend.py
 # Nizhen He — ITM352 Restaurant Comparison App
+# Date Updated - April 30, 2026
 # Run this to verify each backend module is working correctly.
 # Tests each layer independently so you can isolate where issues are.
 

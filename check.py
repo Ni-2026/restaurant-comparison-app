@@ -1,6 +1,6 @@
-# check_dependencies.py
+# Check if you have the following installed:
+# flask, bs4, selenium, webdriver_manager, pandas, numpy, matplotlib, plotly
 # Restaurant Comparison App — ITM352
-# Run this first to verify all required packages are installed.
 
 import importlib
 import sys
