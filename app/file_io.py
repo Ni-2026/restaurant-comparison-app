@@ -1,5 +1,5 @@
-# file_io.py
 # Nizhen He — ITM352 Restaurant Comparison App
+# Date Updated - April 30, 2026
 # Saves and reloads comparison sessions as CSV and JSON
 
 import os
