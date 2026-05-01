@@ -1,6 +1,6 @@
-# Check if you have the following installed:
-# flask, bs4, selenium, webdriver_manager, pandas, numpy, matplotlib, plotly
+# check_dependencies.py
 # Restaurant Comparison App — ITM352
+# Run this first to verify all required packages are installed.
 
 import importlib
 import sys
@@ -9,9 +9,7 @@ import sys
 # Format: "import_name": "pip install name"  (they differ for some packages)
 REQUIRED = {
     "flask":            "flask",
-    "bs4":              "beautifulsoup4",
-    "selenium":         "selenium",
-    "webdriver_manager":"webdriver-manager",
+    "serpapi":          "google-search-results",
     "pandas":           "pandas",
     "numpy":            "numpy",
     "matplotlib":       "matplotlib",
@@ -30,9 +28,9 @@ for import_name, pip_name in REQUIRED.items():
     try:
         mod = importlib.import_module(import_name)
         version = getattr(mod, "__version__", "version unknown")
-        print(f"  ✅ {pip_name:<22} INSTALLED   (version: {version})")
+        print(f"  ✅ {pip_name:<25} INSTALLED   (version: {version})")
     except ImportError:
-        print(f"  ❌ {pip_name:<22} NOT INSTALLED")
+        print(f"  ❌ {pip_name:<25} NOT INSTALLED")
         missing.append(pip_name)
         all_installed = False
 

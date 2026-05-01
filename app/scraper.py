@@ -143,3 +143,17 @@ def parse_result(biz: dict) -> dict:
         "phone":        biz.get("phone",    "N/A"),
         "yelp_url":     biz.get("link",     ""),
     }
+
+
+# ── Test Block ───────────────────────────────────────────────────────────────
+if __name__ == "__main__":
+    # Example: scrape 20 japanese restaurants in Honolulu, HI, budget=$$
+    import json
+    results = scrape_yelp("Honolulu, HI", "japanese", 2, max_results=20)
+    print("\n--- Results ---")
+    for r in results:
+        print(r)
+    # Save results to file
+    with open("yelp_results.json", "w", encoding="utf-8") as f:
+        json.dump(results, f, ensure_ascii=False, indent=2)
+    print("\nResults saved to yelp_results.json")
