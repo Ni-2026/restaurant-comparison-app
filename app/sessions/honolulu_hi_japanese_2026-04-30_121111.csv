@@ -1,5 +1,0 @@
-name,rating,review_count,price,address,phone,yelp_url,price_num,rating_norm,review_norm,price_fit,score,rank
-Sushi Palace,4.8,810,$$$,456 Ocean Ave,808-222-2222,https://yelp.com/2,3,1.0,1.0,0.7,0.94,1
-Ramen House,4.5,320,$$,123 Main St,808-111-1111,https://yelp.com/1,2,0.6666666666666669,0.5656692890821714,1.0,0.703,2
-Tokyo Bistro,4.2,430,$$,321 Ala Moana,808-444-4444,https://yelp.com/4,2,0.33333333333333365,0.7037564647683919,1.0,0.5778,3
-Noodle Bar,3.9,95,$,789 King St,808-333-3333,https://yelp.com/3,1,0.0,0.0,0.7,0.14,4

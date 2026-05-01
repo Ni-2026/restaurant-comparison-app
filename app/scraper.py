@@ -1,243 +1,145 @@
+# scraper.py
 # Nizhen He — ITM352 Restaurant Comparison App
-# Date Updated - April 30, 2026
-# Scrapes Yelp search results using Selenium (page load) + BeautifulSoup (parsing)
+# Fetches live Yelp data via SerpAPI (bypasses Yelp's DataDome CAPTCHA)
 
 import time
 import random
-from bs4 import BeautifulSoup
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, WebDriverException
+from serpapi import GoogleSearch
 
+# ── Your SerpAPI Key ──────────────────────────────────────────────────────────
+API_KEY = "226d3125a81c5a098e4de3e4273385d85040dd82285b88913a2b0f31106d7004"
 
-# ── Driver Setup ──────────────────────────────────────────────────────────────
-
-def create_driver():
-    """
-    Creates a headless Chrome WebDriver with anti-detection options.
-    Requires: Google Chrome installed + chromedriver matching your Chrome version.
-    Install chromedriver: pip install webdriver-manager
-    """
-    options = Options()
-    options.add_argument("--headless")               # Run without opening browser window
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--disable-blink-features=AutomationControlled")
-    options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    options.add_experimental_option("useAutomationExtension", False)
-    options.add_argument(
-        "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/124.0.0.0 Safari/537.36"
-    )
-
-    # webdriver-manager auto-downloads the right chromedriver for your Chrome
-    from webdriver_manager.chrome import ChromeDriverManager
-    driver = webdriver.Chrome(
-        service=Service(ChromeDriverManager().install()),
-        options=options
-    )
-    # Mask the navigator.webdriver flag so Yelp doesn't detect automation
-    driver.execute_cdp_cmd(
-        "Page.addScriptToEvaluateOnNewDocument",
-        {"source": "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"}
-    )
-    return driver
-
-
-# ── URL Builder ───────────────────────────────────────────────────────────────
-
-def build_yelp_url(location: str, cuisine: str, budget: int) -> str:
-    """
-    Builds a Yelp search URL from user inputs.
-
-    Args:
-        location (str): e.g. "Honolulu, HI"
-        cuisine  (str): e.g. "japanese"
-        budget   (int): 1=$  2=$$  3=$$$  4=$$$$
-
-    Returns:
-        str: Full Yelp search URL
-    """
-    base = "https://www.yelp.com/search"
-    # Encode spaces as + for URL
-    loc_enc     = location.strip().replace(" ", "+")
-    cuisine_enc = cuisine.strip().replace(" ", "+")
-    url = f"{base}?find_desc={cuisine_enc}+restaurants&find_loc={loc_enc}&attrs=RestaurantsPriceRange2:{budget}"
-    return url
+# ── Hawaii Locations ──────────────────────────────────────────────────────────
+HAWAII_LOCATIONS = [
+    "Honolulu, HI",
+    "Waikiki, Honolulu, HI",
+    "Kailua, HI",
+    "Pearl City, HI",
+    "Lahaina, Maui, HI",
+    "Kihei, Maui, HI",
+    "Kailua-Kona, HI",
+    "Hilo, HI",
+    "Lihue, Kauai, HI",
+]
 
 
 # ── Main Scrape Function ──────────────────────────────────────────────────────
 
-def scrape_yelp(location: str, cuisine: str, budget: int, max_results: int = 10) -> list[dict]:
+def scrape_yelp(location: str, cuisine: str, budget: int,
+                max_results: int = 20) -> list[dict]:
     """
-    Scrapes Yelp for restaurant listings matching the given inputs.
+    Fetches Yelp restaurant listings via SerpAPI.
 
     Args:
-        location   (str): City/address to search
-        cuisine    (str): Type of cuisine
-        budget     (int): Price range 1–4
-        max_results(int): Max number of restaurants to return (default 10)
+        location   (str): e.g. "Honolulu, HI"
+        cuisine    (str): e.g. "seafood"
+        budget     (int): 1=$  2=$$  3=$$$  4=$$$$
+        max_results(int): How many results to return (10 per page, paginates automatically)
 
     Returns:
         list[dict]: Each dict has keys:
             name, rating, review_count, price, address, phone, yelp_url
-        Returns empty list if scraping fails.
-    """
-    url = build_yelp_url(location, cuisine, budget)
-    print(f"[Scraper] Fetching: {url}")
-
-    driver = create_driver()
-    restaurants = []
-
-    try:
-        driver.get(url)
-
-        # Wait until at least one result card is visible (up to 15 sec)
-        try:
-            WebDriverWait(driver, 15).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="serp-ia-card"]'))
-            )
-        except TimeoutException:
-            print("[Scraper] Warning: Timed out waiting for results. Page may have changed.")
-
-        # Random delay to mimic human behavior
-        time.sleep(random.uniform(2.0, 4.0))
-
-        # Hand the fully-loaded page HTML to BeautifulSoup
-        soup = BeautifulSoup(driver.page_source, "html.parser")
-        restaurants = parse_results(soup, max_results)
-
-    except WebDriverException as e:
-        print(f"[Scraper] WebDriver error: {e}")
-
-    finally:
-        driver.quit()  # Always close the browser
-
-    print(f"[Scraper] Found {len(restaurants)} restaurants.")
-    return restaurants
-
-
-# ── HTML Parser ───────────────────────────────────────────────────────────────
-
-def parse_results(soup: BeautifulSoup, max_results: int) -> list[dict]:
-    """
-    Parses BeautifulSoup HTML to extract restaurant data from Yelp result cards.
-
-    NOTE: Yelp changes its HTML structure periodically.
-    If this breaks, inspect the page with DevTools and update the selectors below.
-
-    Args:
-        soup       (BeautifulSoup): Parsed page HTML
-        max_results(int): Cap on how many results to return
-
-    Returns:
-        list[dict]: Cleaned raw restaurant records
     """
     restaurants = []
+    start       = 0
 
-    # Each result card has this test ID — most stable selector on Yelp
-    cards = soup.find_all("div", attrs={"data-testid": "serp-ia-card"})
+    while len(restaurants) < max_results:
+        params = {
+            "engine":    "yelp",
+            "find_desc": cuisine,
+            "find_loc":  location,
+            "start":     start,
+            "api_key":   API_KEY,
+        }
+        # Only add price filter if budget specified — strict filtering can return 0 results
+        if budget:
+            params["attrs"] = f"RestaurantsPriceRange2:{budget}"
 
-    # Fallback: try the older class-based selector if test IDs aren't present
-    if not cards:
-        cards = soup.find_all("li", class_=lambda c: c and "businessList" in c)
+        print(f"[Scraper] Fetching results {start + 1}–{start + 10} "
+              f"for '{cuisine}' in {location}...")
 
-    for card in cards[:max_results]:
         try:
-            restaurant = extract_card_data(card)
-            if restaurant:
-                restaurants.append(restaurant)
+            search  = GoogleSearch(params)
+            results = search.get_dict()
+
+            # Check for API-level errors (bad key, quota exceeded, etc.)
+            if "error" in results:
+                print(f"[Scraper] SerpAPI error: {results['error']}")
+                break
+
+            businesses = results.get("organic_results", [])
+
+            if not businesses:
+                print("[Scraper] No more results.")
+                break
+
+            for biz in businesses:
+                restaurants.append(parse_result(biz))
+
+            start += 10
+
+            # Stop if Yelp returned fewer than 10 — end of results
+            if len(businesses) < 10:
+                print("[Scraper] Reached end of Yelp results.")
+                break
+
+            # Small delay between pages to be polite
+            time.sleep(random.uniform(0.5, 1.5))
+
         except Exception as e:
-            # Skip malformed cards rather than crashing the whole scrape
-            print(f"[Parser] Skipped a card due to error: {e}")
-            continue
+            print(f"[Scraper] Unexpected error: {e}")
+            break
 
-    return restaurants
+    print(f"[Scraper] Fetched {len(restaurants)} restaurants.")
+    return restaurants[:max_results]
 
 
-def extract_card_data(card) -> dict | None:
+# ── Bulk Hawaii Scraper ───────────────────────────────────────────────────────
+
+def scrape_hawaii_bulk(cuisine: str, budget: int,
+                       per_location: int = 20) -> list[dict]:
     """
-    Extracts fields from a single Yelp result card element.
+    Scrapes multiple Hawaii locations and returns one combined raw list.
+    Pass the result to pipeline.build_dataframe() — it handles deduplication.
 
     Args:
-        card: BeautifulSoup Tag for one restaurant card
+        cuisine      (str): e.g. "seafood"
+        budget       (int): 1–4
+        per_location (int): Results per location (default 20)
+                            9 locations × 20 = up to 180 raw → ~100 unique after dedup
 
     Returns:
-        dict with restaurant fields, or None if critical fields are missing
+        list[dict]: Combined raw records from all Hawaii locations
     """
-    # ── Name ──────────────────────────────────────────────────────────────────
-    name_tag = card.find("a", attrs={"data-testid": "biz-name"})
-    if not name_tag:
-        return None  # Can't use a result with no name
-    name = name_tag.get_text(strip=True)
+    all_raw = []
+    for location in HAWAII_LOCATIONS:
+        raw = scrape_yelp(location, cuisine, budget, max_results=per_location)
+        all_raw.extend(raw)
+        time.sleep(random.uniform(1.0, 2.0))   # pause between locations
+    print(f"[Scraper] Total raw results: {len(all_raw)}")
+    return all_raw
 
-    # ── Yelp URL ───────────────────────────────────────────────────────────────
-    href = name_tag.get("href", "")
-    yelp_url = "https://www.yelp.com" + href if href.startswith("/") else href
 
-    # ── Rating (e.g. "4.5 star rating") ───────────────────────────────────────
-    rating = None
-    rating_tag = card.find("span", attrs={"data-testid": "rating-stars"})
-    if rating_tag:
-        aria = rating_tag.get("aria-label", "")          # "4.5 star rating"
-        rating = parse_float(aria.split(" ")[0])
+# ── Parser ────────────────────────────────────────────────────────────────────
 
-    # ── Review Count (e.g. "312 reviews") ─────────────────────────────────────
-    review_count = 0
-    review_tag = card.find("span", attrs={"data-testid": "review-count"})
-    if review_tag:
-        review_count = parse_int(review_tag.get_text(strip=True))
+def parse_result(biz: dict) -> dict:
+    """
+    Converts one SerpAPI Yelp organic result into the flat dict
+    that pipeline.build_dataframe() expects.
 
-    # ── Price (e.g. "$$") ─────────────────────────────────────────────────────
-    price = None
-    price_tag = card.find("span", attrs={"class": lambda c: c and "priceRange" in " ".join(c)})
-    if not price_tag:
-        # Fallback: look for $/$$/$$$ text pattern directly
-        price_tag = card.find(string=lambda t: t and t.strip() in ["$", "$$", "$$$", "$$$$"])
-    price = price_tag.get_text(strip=True) if price_tag else "N/A"
-
-    # ── Address ────────────────────────────────────────────────────────────────
-    address = "N/A"
-    address_tag = card.find("address")
-    if address_tag:
-        address = address_tag.get_text(separator=" ", strip=True)
-
-    # ── Phone (not always present on search page) ──────────────────────────────
-    phone = "N/A"
-    phone_tag = card.find("p", attrs={"data-testid": "biz-phone"})
-    if phone_tag:
-        phone = phone_tag.get_text(strip=True)
+    SerpAPI Yelp result keys used:
+        title, rating, reviews, price, phone, link, neighborhoods
+    """
+    # Address: SerpAPI returns neighborhoods (e.g. "Chinatown") not a full address
+    # We combine it with location for a readable label
+    neighborhood = biz.get("neighborhoods", "")
 
     return {
-        "name":         name,
-        "rating":       rating,
-        "review_count": review_count,
-        "price":        price,
-        "address":      address,
-        "phone":        phone,
-        "yelp_url":     yelp_url,
+        "name":         biz.get("title",    ""),
+        "rating":       biz.get("rating",   None),
+        "review_count": biz.get("reviews",  0),
+        "price":        biz.get("price",    "N/A"),
+        "address":      neighborhood if neighborhood else "N/A",
+        "phone":        biz.get("phone",    "N/A"),
+        "yelp_url":     biz.get("link",     ""),
     }
-
-
-# ── Helpers ───────────────────────────────────────────────────────────────────
-
-def parse_float(value: str) -> float | None:
-    """Safely converts a string to float. Returns None if it fails."""
-    try:
-        return float(value.replace(",", ""))
-    except (ValueError, AttributeError):
-        return None
-
-
-def parse_int(value: str) -> int:
-    """Safely converts a string to int, stripping non-numeric chars."""
-    try:
-        cleaned = "".join(filter(str.isdigit, value))
-        return int(cleaned) if cleaned else 0
-    except (ValueError, AttributeError):
-        return 0

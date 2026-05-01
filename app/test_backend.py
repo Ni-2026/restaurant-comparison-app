@@ -1,5 +1,5 @@
+# test_backend.py
 # Nizhen He — ITM352 Restaurant Comparison App
-# Date Updated - April 30, 2026
 # Run this to verify each backend module is working correctly.
 # Tests each layer independently so you can isolate where issues are.
 
@@ -184,44 +184,76 @@ test("list_sessions() returns a list",        test_list_sessions)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# SECTION 4 — scraper.py (URL builder only — no live Yelp call)
-# Full scrape test requires Chrome + internet; run manually when ready.
+# SECTION 4 — scraper.py (SerpAPI-based, no live API call needed)
+# Tests the parser and API key check without spending any of your 100 searches.
 # ─────────────────────────────────────────────────────────────────────────────
-print("\n[ 4 ] scraper.py  (URL builder only — skipping live Yelp call)")
+print("\n[ 4 ] scraper.py  (parser & config — no live API call)")
 
-from scraper import build_yelp_url, parse_float, parse_int
+from scraper import parse_result, API_KEY
 
-def test_url_contains_location():
-    url = build_yelp_url("Honolulu, HI", "japanese", 2)
-    assert "Honolulu" in url, "URL should contain location"
+# A mock SerpAPI organic result — matches the real structure SerpAPI returns
+MOCK_SERP_RESULT = {
+    "title":         "Nico's Pier 38",
+    "rating":        4.5,
+    "reviews":       1842,
+    "price":         "$$",
+    "phone":         "(808) 540-1377",
+    "link":          "https://www.yelp.com/biz/nicos-pier-38-honolulu",
+    "neighborhoods": "Iwilei",
+}
 
-def test_url_contains_cuisine():
-    url = build_yelp_url("Honolulu, HI", "japanese", 2)
-    assert "japanese" in url.lower(), "URL should contain cuisine"
+# A result missing optional fields — scraper should handle gracefully
+MOCK_SERP_MINIMAL = {
+    "title":  "Mystery Cafe",
+    "rating": 4.0,
+    "reviews": 50,
+}
 
-def test_url_contains_budget():
-    url = build_yelp_url("Honolulu, HI", "japanese", 2)
-    assert "2" in url, "URL should contain budget level"
+def test_parse_result_full():
+    result = parse_result(MOCK_SERP_RESULT)
+    assert result["name"]         == "Nico's Pier 38",  "name should be title"
+    assert result["rating"]       == 4.5,               "rating should match"
+    assert result["review_count"] == 1842,              "review_count should map from reviews"
+    assert result["price"]        == "$$",              "price should match"
+    assert result["phone"]        == "(808) 540-1377",  "phone should match"
+    assert "yelp.com" in result["yelp_url"],            "yelp_url should contain yelp.com"
 
-def test_parse_float_valid():
-    assert parse_float("4.5") == 4.5, "Should parse '4.5' to 4.5"
+def test_parse_result_maps_reviews_key():
+    # SerpAPI uses "reviews" not "review_count" — parser must remap it
+    result = parse_result(MOCK_SERP_RESULT)
+    assert "review_count" in result, "output must have 'review_count' key for pipeline"
 
-def test_parse_float_invalid():
-    assert parse_float("N/A") is None, "Invalid string should return None"
+def test_parse_result_missing_fields():
+    # Missing price/phone/neighborhoods should fall back to "N/A"
+    result = parse_result(MOCK_SERP_MINIMAL)
+    assert result["price"]   == "N/A", "missing price should default to N/A"
+    assert result["phone"]   == "N/A", "missing phone should default to N/A"
+    assert result["address"] == "N/A", "missing neighborhood should default to N/A"
 
-def test_parse_int_valid():
-    assert parse_int("312 reviews") == 312, "Should extract 312 from string"
+def test_parse_result_output_keys():
+    # All keys that pipeline.build_dataframe() expects must be present
+    result = parse_result(MOCK_SERP_RESULT)
+    required = ["name", "rating", "review_count", "price", "address", "phone", "yelp_url"]
+    for key in required:
+        assert key in result, f"parse_result() output missing required key: '{key}'"
 
-def test_parse_int_empty():
-    assert parse_int("") == 0, "Empty string should return 0"
+def test_api_key_is_set():
+    assert API_KEY != "PASTE_YOUR_SERPAPI_KEY_HERE", \
+        "API key is still the placeholder — paste your SerpAPI key into scraper.py"
 
-test("build_yelp_url() includes location", test_url_contains_location)
-test("build_yelp_url() includes cuisine",  test_url_contains_cuisine)
-test("build_yelp_url() includes budget",   test_url_contains_budget)
-test("parse_float() handles valid input",  test_parse_float_valid)
-test("parse_float() handles invalid input",test_parse_float_invalid)
-test("parse_int() extracts number",        test_parse_int_valid)
-test("parse_int() handles empty string",   test_parse_int_empty)
+def test_parse_result_compatible_with_pipeline():
+    # Full round-trip: parse → build_dataframe → should not be empty
+    from pipeline import build_dataframe
+    raw = [parse_result(MOCK_SERP_RESULT)]
+    df  = build_dataframe(raw)
+    assert not df.empty, "A parsed SerpAPI result should survive build_dataframe()"
+
+test("parse_result() maps all fields correctly",      test_parse_result_full)
+test("parse_result() remaps 'reviews' → 'review_count'", test_parse_result_maps_reviews_key)
+test("parse_result() handles missing fields",         test_parse_result_missing_fields)
+test("parse_result() returns all required keys",      test_parse_result_output_keys)
+test("API key is set (not placeholder)",              test_api_key_is_set)
+test("parse_result() output works with pipeline",     test_parse_result_compatible_with_pipeline)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
