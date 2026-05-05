@@ -1,0 +1,7 @@
+flask
+google-search-results
+pandas
+numpy
+matplotlib
+plotly
+requests

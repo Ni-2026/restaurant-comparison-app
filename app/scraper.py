@@ -157,3 +157,4 @@ if __name__ == "__main__":
     with open("yelp_results.json", "w", encoding="utf-8") as f:
         json.dump(results, f, ensure_ascii=False, indent=2)
     print("\nResults saved to yelp_results.json")
+    
