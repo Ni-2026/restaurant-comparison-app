@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Hawaii Eats{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Design tokens ─────────────────────────────────────────── */
+    :root {
+      --ocean:     #0b5e6e;
+      --ocean-mid: #1a7a8f;
+      --ocean-pale:#dff0f4;
+      --sand:      #faf6f0;
+      --sand-mid:  #ede6da;
+      --coral:     #c95032;
+      --coral-pale:#fceae4;
+      --gold:      #d4882a;
+      --text:      #1c1c1c;
+      --muted:     #6a6a6a;
+      --border:    #d8d0c6;
+      --white:     #ffffff;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.07);
+      --shadow:    0 4px 20px rgba(0,0,0,0.09);
+      --shadow-lg: 0 8px 36px rgba(0,0,0,0.12);
+      --r:         10px;
+      --r-sm:      6px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--sand);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a { color: var(--ocean); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    nav {
+      background: var(--ocean);
+      height: 60px;
+      padding: 0 1.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.18);
+    }
+    .brand {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 1.3rem;
+      color: var(--white);
+      font-style: italic;
+      letter-spacing: 0.3px;
+      user-select: none;
+    }
+    .brand b { font-style: normal; }
+    .nav-links { display: flex; align-items: center; gap: 0.2rem; }
+    .nav-links a {
+      color: rgba(255,255,255,0.82);
+      padding: 0.38rem 0.75rem;
+      border-radius: var(--r-sm);
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: background 0.18s;
+    }
+    .nav-links a:hover { background: rgba(255,255,255,0.14); color: #fff; text-decoration: none; }
+    .nav-btn {
+      border: 1.5px solid rgba(255,255,255,0.45);
+      margin-left: 0.4rem;
+    }
+    .nav-btn-fill {
+      background: var(--coral) !important;
+      color: var(--white) !important;
+      border: none !important;
+      margin-left: 0.4rem;
+    }
+    .nav-btn-fill:hover { background: #ae4228 !important; }
+
+    /* ── Flash messages ───────────────────────────────────────── */
+    .flashes { max-width: 860px; margin: 1rem auto; padding: 0 1.5rem; width: 100%; }
+    .flash {
+      padding: 0.8rem 1.1rem;
+      border-radius: var(--r-sm);
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      border-left: 4px solid transparent;
+    }
+    .flash.success { background: #e8f5e9; color: #1b5e20; border-color: #43a047; }
+    .flash.error   { background: var(--coral-pale); color: #7a2310; border-color: var(--coral); }
+    .flash.info    { background: var(--ocean-pale); color: #08404d; border-color: var(--ocean-mid); }
+    .flash.warning { background: #fff8e1; color: #6b4800; border-color: var(--gold); }
+
+    /* ── Layout ───────────────────────────────────────────────── */
+    main { flex: 1; max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem; width: 100%; }
+
+    /* ── Cards ────────────────────────────────────────────────── */
+    .card {
+      background: var(--white);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      padding: 2rem;
+    }
+
+    /* ── Buttons ──────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.65rem 1.4rem;
+      border-radius: var(--r-sm);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.12s, box-shadow 0.15s;
+      text-decoration: none;
+    }
+    .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow); text-decoration: none; }
+    .btn:active { transform: translateY(0); }
+    .btn-ocean  { background: var(--ocean); color: var(--white); }
+    .btn-ocean:hover  { background: var(--ocean-mid); color: var(--white); }
+    .btn-coral  { background: var(--coral); color: var(--white); }
+    .btn-coral:hover  { background: #ae4228; color: var(--white); }
+    .btn-ghost  { background: transparent; border: 1.5px solid var(--border); color: var(--text); }
+    .btn-ghost:hover  { border-color: var(--ocean); color: var(--ocean); background: var(--ocean-pale); }
+    .btn-lg { padding: 0.82rem 2rem; font-size: 1rem; }
+    .btn-full { width: 100%; justify-content: center; }
+
+    /* ── Forms ────────────────────────────────────────────────── */
+    .form-group { margin-bottom: 1.2rem; }
+    label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+    input[type="text"], input[type="email"],
+    input[type="password"], select {
+      width: 100%;
+      padding: 0.65rem 0.95rem;
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-sm);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.93rem;
+      background: var(--white);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.18s, box-shadow 0.18s;
+    }
+    input:focus, select:focus {
+      border-color: var(--ocean-mid);
+      box-shadow: 0 0 0 3px rgba(26,122,143,0.12);
+    }
+
+    /* ── Typography ───────────────────────────────────────────── */
+    h1, h2, h3 { font-family: 'Libre Baskerville', Georgia, serif; line-height: 1.2; }
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; }
+    h3 { font-size: 1.15rem; }
+    .label-tag {
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--ocean-mid);
+    }
+    .muted { color: var(--muted); }
+
+    /* ── Price badges ─────────────────────────────────────────── */
+    .p1 { background: #e8f5e9; color: #2e7d32; }
+    .p2 { background: #e3f2fd; color: #1565c0; }
+    .p3 { background: #fff3e0; color: #e65100; }
+    .p4 { background: #fce4ec; color: #880e4f; }
+    .price-badge {
+      display: inline-block;
+      padding: 0.18rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      margin-top: 3rem;
+    }
+
+    /* ── Utility ──────────────────────────────────────────────── */
+    .mt-1 { margin-top: 0.5rem; }
+    .mt-2 { margin-top: 1rem; }
+    .mt-3 { margin-top: 1.5rem; }
+    .mt-4 { margin-top: 2rem; }
+    .flex { display: flex; }
+    .gap-1 { gap: 0.5rem; }
+    .gap-2 { gap: 1rem; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .text-center { text-align: center; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    @media(max-width:640px){
+      .grid-2 { grid-template-columns: 1fr; }
+      nav { padding: 0 1rem; }
+      .brand { font-size: 1.1rem; }
+      main { padding: 1.25rem 1rem; }
+    }
+  </style>
+  {% block head %}{% endblock %}
+</head>
+<body>
+
+<nav>
+  <a class="brand" href="{{ url_for('home') }}"><b>Hawaii</b> Eats</a>
+  <div class="nav-links">
+    <a href="{{ url_for('home') }}">Search</a>
+    {% if current_user.is_authenticated %}
+      <a href="{{ url_for('history') }}">History</a>
+      <a href="{{ url_for('profile') }}">Profile</a>
+      <a href="{{ url_for('logout') }}" class="nav-btn">Log out</a>
+    {% else %}
+      <a href="{{ url_for('login') }}">Log in</a>
+      <a href="{{ url_for('register') }}" class="nav-btn-fill">Sign up</a>
+    {% endif %}
+  </div>
+</nav>
+
+{% with msgs = get_flashed_messages(with_categories=true) %}
+  {% if msgs %}
+    <div class="flashes">
+      {% for cat, msg in msgs %}
+        <div class="flash {{ cat }}">{{ msg }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<main>{% block content %}{% endblock %}</main>
+
+<footer>
+  Hawaii Eats &mdash; ITM352 Restaurant Comparison App &middot; Spring 2026 &middot;
+  Nizhen He &bull; Grace Kulhanek &bull; Sara Bautista
+</footer>
+</body>
+</html>

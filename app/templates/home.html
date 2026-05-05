@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+{% block title %}Hawaii Eats — Find Your Perfect Restaurant{% endblock %}
+{% block head %}
+<style>
+  .hero { text-align: center; padding: 2.75rem 1rem 2rem; }
+  .hero-icon { font-size: 3rem; display: block; margin-bottom: 0.75rem; }
+  .hero h1 {
+    font-size: 2.8rem; color: var(--ocean); margin-bottom: 0.6rem;
+  }
+  .hero h1 em { color: var(--coral); font-style: italic; }
+  .hero p { font-size: 1.05rem; color: var(--muted); max-width: 440px; margin: 0 auto 1.75rem; line-height: 1.6; }
+
+  /* Search card */
+  .search-card { max-width: 700px; margin: 0 auto; }
+  .search-card h2 { font-size: 1.2rem; margin-bottom: 1.5rem; font-family: 'Inter',sans-serif; font-weight: 600; }
+
+  /* Budget tiles */
+  .budget-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 0.5rem; }
+  .budget-tile input { display: none; }
+  .budget-tile label {
+    display: block; text-align: center;
+    padding: 0.6rem 0.4rem;
+    border: 2px solid var(--border);
+    border-radius: var(--r-sm);
+    cursor: pointer;
+    font-size: 1.05rem; font-weight: 700; color: var(--muted);
+    text-transform: none; letter-spacing: 0;
+    transition: border-color 0.18s, background 0.18s, color 0.18s;
+  }
+  .budget-tile input:checked + label {
+    border-color: var(--ocean-mid); background: var(--ocean-pale); color: var(--ocean);
+  }
+  .budget-tile label:hover { border-color: var(--ocean-mid); }
+  .b-sub { font-size: 0.7rem; font-weight: 400; display: block; margin-top: 0.1rem; opacity: 0.65; }
+
+  /* Restriction pills */
+  .rest-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .rest-pill input { display: none; }
+  .rest-pill label {
+    padding: 0.3rem 0.85rem;
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    font-size: 0.86rem; font-weight: 500;
+    cursor: pointer; color: var(--muted);
+    text-transform: none; letter-spacing: 0;
+    transition: border-color 0.18s, background 0.18s, color 0.18s;
+  }
+  .rest-pill input:checked + label {
+    border-color: var(--ocean); background: var(--ocean-pale); color: var(--ocean);
+  }
+
+  /* Mode toggle */
+  .mode-toggle { display: flex; gap: 0.5rem; align-items: center; }
+  .mode-toggle label { text-transform: none; letter-spacing: 0; font-size: 0.88rem; color: var(--text); font-weight: 400; }
+  .mode-toggle input { accent-color: var(--ocean-mid); width:15px; height:15px; }
+
+  /* How it works */
+  .steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem; margin-top: 3rem; }
+  .step { background: var(--white); border-radius: var(--r); box-shadow: var(--shadow-sm); padding: 1.4rem 1.1rem; text-align: center; }
+  .step-icon { font-size: 1.9rem; display: block; margin-bottom: 0.6rem; }
+  .step h3 { font-size: 0.95rem; font-family: 'Inter',sans-serif; font-weight: 600; margin-bottom: 0.35rem; }
+  .step p { font-size: 0.84rem; color: var(--muted); line-height: 1.55; }
+
+  @media(max-width:620px){
+    .steps { grid-template-columns: 1fr; }
+    .budget-grid { grid-template-columns: repeat(2,1fr); }
+    .hero h1 { font-size: 2.1rem; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <span class="hero-icon">🌺</span>
+  <h1>Find your next<br><em>perfect meal</em> in Hawaii</h1>
+  <p>Tell us your craving, island, and budget — we rank every option and our AI picks one for you.</p>
+</section>
+
+<div class="search-card card">
+  <h2>What are you looking for?</h2>
+  <form action="{{ url_for('search') }}" method="POST">
+
+    <div class="grid-2">
+      <!-- Cuisine -->
+      <div class="form-group">
+        <label for="cuisine">Cuisine</label>
+        <select name="cuisine" id="cuisine">
+          {% for val, label in cuisines %}
+            <option value="{{ val }}">{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Island / Location -->
+      <div class="form-group">
+        <label for="location">Island</label>
+        <select name="location" id="location">
+          {% for val, label in islands %}
+            <option value="{{ val }}" {% if user_location and val in user_location %}selected{% endif %}>
+              {{ label }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <!-- Budget -->
+    <div class="form-group">
+      <label>Budget</label>
+      <div class="budget-grid">
+        {% for v, sym, desc in [(1,'$','Under $15'),(2,'$$','$15–$30'),(3,'$$$','$30–$60'),(4,'$$$$','$60+')] %}
+          <div class="budget-tile">
+            <input type="radio" name="budget" id="b{{ v }}" value="{{ v }}"
+                   {% if user_budget == v %}checked{% endif %} />
+            <label for="b{{ v }}">{{ sym }}<span class="b-sub">{{ desc }}</span></label>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Dietary restrictions -->
+    <div class="form-group">
+      <label>Dietary Restrictions <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+      <div class="rest-grid">
+        {% for r in restrictions %}
+          <div class="rest-pill">
+            <input type="checkbox" name="restrictions" id="r_{{ r }}" value="{{ r }}"
+                   {% if r in user_restrictions %}checked{% endif %} />
+            <label for="r_{{ r }}">{{ r.title() }}</label>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Max results + mode -->
+    <div class="grid-2" style="margin-bottom:1.2rem;">
+      <div class="form-group" style="margin-bottom:0;">
+        <label for="max_results">Max Results</label>
+        <select name="max_results" id="max_results">
+          <option value="10">10</option>
+          <option value="20" selected>20</option>
+          <option value="30">30</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin-bottom:0;">
+        <label>Search Mode</label>
+        <div class="mode-toggle" style="padding-top:0.6rem;">
+          <input type="radio" name="mode" id="mode_live" value="live" checked />
+          <label for="mode_live">Live (SerpAPI)</label>
+          &nbsp;&nbsp;
+          <input type="radio" name="mode" id="mode_demo" value="demo" />
+          <label for="mode_demo">Demo (sample data)</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <button type="submit" class="btn btn-coral btn-lg">🔍 Find My Restaurant</button>
+    </div>
+  </form>
+</div>
+
+<!-- How it works -->
+<div class="steps">
+  <div class="step">
+    <span class="step-icon">📊</span>
+    <h3>Smart Ranking</h3>
+    <p>Scores every restaurant: rating (50%), review volume (30%), budget fit (20%).</p>
+  </div>
+  <div class="step">
+    <span class="step-icon">📈</span>
+    <h3>Visual Comparison</h3>
+    <p>Bar and radar charts show at a glance why one restaurant stands out.</p>
+  </div>
+  <div class="step">
+    <span class="step-icon">🤖</span>
+    <h3>AI Picks One</h3>
+    <p>Claude AI reviews the top results and picks a single, personalized recommendation.</p>
+  </div>
+</div>
+{% endblock %}

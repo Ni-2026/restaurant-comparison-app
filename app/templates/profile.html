@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block title %}Profile — Hawaii Eats{% endblock %}
+{% block head %}
+<style>
+  .profile-header { display: flex; align-items: center; gap: 1.25rem; margin-bottom: 2rem; }
+  .avatar {
+    width: 60px; height: 60px; border-radius: 50%;
+    background: var(--ocean); color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Libre Baskerville', serif; font-size: 1.65rem; flex-shrink: 0;
+  }
+  .profile-header h1 { font-size: 1.6rem; margin-bottom: 0.15rem; }
+  .profile-header p { color: var(--muted); font-size: 0.88rem; }
+
+  /* Budget tiles reuse home styles */
+  .budget-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 0.5rem; }
+  .budget-tile input { display: none; }
+  .budget-tile label {
+    display: block; text-align: center;
+    padding: 0.6rem 0.4rem;
+    border: 2px solid var(--border); border-radius: var(--r-sm);
+    cursor: pointer; font-size: 1.05rem; font-weight: 700;
+    color: var(--muted); text-transform: none; letter-spacing: 0;
+    transition: border-color 0.18s, background 0.18s, color 0.18s;
+  }
+  .budget-tile input:checked + label {
+    border-color: var(--ocean-mid); background: var(--ocean-pale); color: var(--ocean);
+  }
+  .b-sub { font-size: 0.7rem; font-weight: 400; display: block; margin-top: 0.1rem; opacity: 0.65; }
+
+  /* Restriction pills */
+  .rest-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .rest-pill input { display: none; }
+  .rest-pill label {
+    padding: 0.3rem 0.85rem; border: 1.5px solid var(--border);
+    border-radius: 20px; font-size: 0.86rem; font-weight: 500;
+    cursor: pointer; color: var(--muted); text-transform: none; letter-spacing: 0;
+    transition: border-color 0.18s, background 0.18s, color 0.18s;
+  }
+  .rest-pill input:checked + label {
+    border-color: var(--ocean); background: var(--ocean-pale); color: var(--ocean);
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="profile-header">
+  <div class="avatar">{{ user.username[0].upper() }}</div>
+  <div>
+    <h1>{{ user.username }}</h1>
+    <p>
+      {{ user.email }}
+      &middot; Member since {{ user.created_at[:10] if user.created_at else 'recently' }}
+      &middot; {{ user.history|length }} past searches
+    </p>
+  </div>
+</div>
+
+<div class="card">
+  <h2 style="margin-bottom:1.5rem;">Search Preferences</h2>
+  <form method="POST">
+
+    <!-- Default location -->
+    <div class="form-group">
+      <label for="location">Default Island / Location</label>
+      <select name="location" id="location">
+        <option value="">No default</option>
+        {% for val, label in islands %}
+          <option value="{{ val }}" {% if user.location == val %}selected{% endif %}>
+            {{ label }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <!-- Default budget -->
+    <div class="form-group">
+      <label>Default Budget</label>
+      <div class="budget-grid">
+        {% for v, sym, desc in [(1,'$','Under $15'),(2,'$$','$15–$30'),(3,'$$$','$30–$60'),(4,'$$$$','$60+')] %}
+          <div class="budget-tile">
+            <input type="radio" name="budget" id="pb{{ v }}" value="{{ v }}"
+                   {% if user.budget == v %}checked{% endif %} />
+            <label for="pb{{ v }}">{{ sym }}<span class="b-sub">{{ desc }}</span></label>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Dietary restrictions -->
+    <div class="form-group">
+      <label>Dietary Restrictions</label>
+      <div class="rest-grid">
+        {% set user_rest = user.restrictions | map('lower') | list %}
+        {% for r in restrictions %}
+          <div class="rest-pill">
+            <input type="checkbox" id="pr_{{ r }}" value="{{ r }}"
+                   name="rest_check"
+                   {% if r in user_rest %}checked{% endif %}
+                   onchange="syncRest()" />
+            <label for="pr_{{ r }}">{{ r.title() }}</label>
+          </div>
+        {% endfor %}
+      </div>
+      <!-- Hidden field assembled by JS before submit -->
+      <input type="hidden" id="restrictions_hidden" name="restrictions_hidden"
+             value="{{ user.restrictions | join(',') }}" />
+    </div>
+
+    <div style="display:flex;gap:1rem;margin-top:1.5rem;flex-wrap:wrap;">
+      <button type="submit" class="btn btn-ocean">Save Preferences</button>
+      <a href="{{ url_for('history') }}" class="btn btn-ghost">View History</a>
+    </div>
+  </form>
+</div>
+
+<script>
+  function syncRest() {
+    const vals = [...document.querySelectorAll('input[name="rest_check"]:checked')]
+                   .map(el => el.value);
+    document.getElementById('restrictions_hidden').value = vals.join(',');
+  }
+  syncRest(); // sync on page load for pre-checked state
+</script>
+{% endblock %}

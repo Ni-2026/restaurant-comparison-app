@@ -1,0 +1,294 @@
+{% extends "base.html" %}
+{% block title %}Results — Hawaii Eats{% endblock %}
+{% block head %}
+<style>
+  /* ── Final pick hero ───────────────────────────────────────── */
+  .final-hero {
+    background: linear-gradient(135deg, var(--ocean) 0%, #0f7e95 100%);
+    border-radius: var(--r);
+    color: var(--white);
+    padding: 2.25rem 2.5rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .final-hero::after {
+    content: '🌺';
+    position: absolute;
+    right: 1.75rem; top: 1.25rem;
+    font-size: 5.5rem;
+    opacity: 0.1;
+    pointer-events: none;
+  }
+  .final-hero .eyebrow {
+    font-size: 0.72rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1.8px;
+    opacity: 0.75; margin-bottom: 0.4rem;
+  }
+  .final-hero h1 { font-size: 2.2rem; color: var(--white); line-height: 1.15; margin-bottom: 0.6rem; }
+  .final-hero .meta {
+    display: flex; flex-wrap: wrap; gap: 0.9rem;
+    font-size: 0.89rem; opacity: 0.88; margin-bottom: 1rem;
+  }
+  .final-hero .meta span { display: flex; align-items: center; gap: 0.3rem; }
+  .reason-box {
+    background: rgba(255,255,255,0.13);
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    font-size: 0.93rem;
+    line-height: 1.65;
+    margin-bottom: 0.75rem;
+  }
+  .tip-line { font-size: 0.88rem; opacity: 0.82; font-style: italic; }
+  .yelp-link {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    margin-top: 1.1rem;
+    background: var(--white); color: var(--ocean);
+    padding: 0.55rem 1.3rem; border-radius: 6px;
+    font-weight: 700; font-size: 0.88rem;
+    transition: background 0.18s, transform 0.12s;
+  }
+  .yelp-link:hover { background: var(--ocean-pale); transform: translateY(-1px); text-decoration: none; }
+
+  /* ── Runner-up banner ──────────────────────────────────────── */
+  .runner-up-bar {
+    background: var(--white);
+    border-left: 4px solid var(--ocean-mid);
+    border-radius: 0 var(--r-sm) var(--r-sm) 0;
+    padding: 0.9rem 1.2rem;
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-sm);
+  }
+  .runner-up-bar strong { color: var(--ocean); }
+
+  /* ── Search pills ──────────────────────────────────────────── */
+  .pill-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.5rem; }
+  .pill {
+    background: var(--sand-mid); border-radius: 20px;
+    padding: 0.22rem 0.75rem; font-size: 0.8rem;
+    font-weight: 500; color: var(--muted);
+  }
+  .pill.hi { background: var(--ocean-pale); color: var(--ocean); font-weight: 600; }
+
+  /* ── Section header ────────────────────────────────────────── */
+  .sec-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 1rem; }
+  .sec-head h2 { font-size: 1.35rem; }
+  .sec-head span { font-size: 0.8rem; color: var(--muted); }
+
+  /* ── Rankings table ────────────────────────────────────────── */
+  .rtable { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  .rtable th {
+    font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.7px;
+    color: var(--muted); padding: 0.55rem 0.7rem; border-bottom: 2px solid var(--border);
+    text-align: left;
+  }
+  .rtable td { padding: 0.8rem 0.7rem; border-bottom: 1px solid var(--sand-mid); vertical-align: middle; }
+  .rtable tr:last-child td { border-bottom: none; }
+  .rtable tr.top td { background: rgba(11,94,110,0.04); }
+  .rank-badge {
+    width: 26px; height: 26px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; font-weight: 700;
+  }
+  .rk1 { background: #ffd600; color: #5a3d00; }
+  .rk2 { background: #e0e0e0; color: #333; }
+  .rk3 { background: #cd7f32; color: #fff; }
+  .rkn { background: var(--sand-mid); color: var(--muted); }
+  .name-cell a { font-weight: 600; color: var(--ocean); }
+  .name-cell a:hover { text-decoration: underline; }
+  .addr { font-size: 0.78rem; color: var(--muted); margin-top: 0.1rem; }
+  .rating-val { color: #c47d00; font-weight: 700; }
+
+  /* Score bar */
+  .sbar { display: flex; align-items: center; gap: 0.45rem; min-width: 90px; }
+  .sbar-bg { flex: 1; background: var(--sand-mid); border-radius: 4px; height: 7px; overflow: hidden; }
+  .sbar-fill { height: 100%; border-radius: 4px; background: var(--ocean-mid); }
+  .sbar-num { font-size: 0.82rem; font-weight: 700; color: var(--ocean); min-width: 38px; }
+
+  /* ── Charts ────────────────────────────────────────────────── */
+  .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 0.5rem; }
+  .chart-box { background: var(--white); border-radius: var(--r); box-shadow: var(--shadow); padding: 1.25rem; }
+  .chart-box h3 { font-size: 1rem; font-family: 'Inter',sans-serif; font-weight: 600; margin-bottom: 0.75rem; }
+  .chart-box img { width: 100%; border-radius: 6px; }
+  .radar-frame { width: 100%; height: 460px; border: none; border-radius: 6px; background: var(--white); }
+
+  /* ── Avoid note ────────────────────────────────────────────── */
+  .avoid-note {
+    background: #fff8f0;
+    border-left: 4px solid var(--gold);
+    border-radius: 0 var(--r-sm) var(--r-sm) 0;
+    padding: 0.75rem 1rem;
+    font-size: 0.87rem;
+    color: #6b3a00;
+    margin-top: 1rem;
+  }
+
+  /* ── Mode badge ────────────────────────────────────────────── */
+  .mode-badge {
+    display: inline-block; font-size: 0.74rem; font-weight: 600;
+    padding: 0.18rem 0.55rem; border-radius: 4px; margin-left: 0.5rem;
+  }
+  .mode-live { background: #e8f5e9; color: #2e7d32; }
+  .mode-demo { background: #fff3e0; color: #e65100; }
+
+  @media(max-width:620px){
+    .charts-grid { grid-template-columns: 1fr; }
+    .final-hero h1 { font-size: 1.7rem; }
+    .rtable th:nth-child(4), .rtable td:nth-child(4) { display: none; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Search summary pills -->
+<div class="pill-row">
+  <span class="pill">🍽 {{ cuisine.replace('_',' ').title() }}</span>
+  <span class="pill">📍 {{ location }}</span>
+  <span class="pill">💵 {{ ['$','$$','$$$','$$$$'][budget-1] }}</span>
+  {% for r in restrictions %}<span class="pill hi">{{ r }}</span>{% endfor %}
+  <span class="pill">{{ stats.total }} restaurants ranked</span>
+  <span class="pill">{{ searched_at }}</span>
+  <span class="mode-badge {{ 'mode-live' if mode == 'live' else 'mode-demo' }}">
+    {{ '🔴 Live' if mode == 'live' else '🟡 Demo' }}
+  </span>
+</div>
+
+<!-- ── FINAL PICK ─────────────────────────────────────────────────── -->
+<div class="final-hero">
+  <p class="eyebrow">🤖 AI Recommendation — Tonight you should go to</p>
+  <h1>{{ final_pick.name }}</h1>
+
+  <div class="meta">
+    <span>⭐ {{ "%.1f"|format(final_pick.rating) }}</span>
+    <span>💬 {{ "{:,}".format(final_pick.review_count|int) }} reviews</span>
+    <span>💵 {{ final_pick.price }}</span>
+    {% if final_pick.address and final_pick.address != 'N/A' %}
+      <span>📍 {{ final_pick.address }}</span>
+    {% endif %}
+    {% if final_pick.phone and final_pick.phone != 'N/A' %}
+      <span>📞 {{ final_pick.phone }}</span>
+    {% endif %}
+  </div>
+
+  {% if recommendation and not recommendation.get('error') %}
+    <div class="reason-box">{{ recommendation.reason }}</div>
+    {% if recommendation.tip %}
+      <p class="tip-line">💡 {{ recommendation.tip }}</p>
+    {% endif %}
+  {% elif recommendation and recommendation.get('_mock') %}
+    <div class="reason-box">{{ recommendation.reason }}</div>
+    <p class="tip-line">💡 {{ recommendation.tip }}</p>
+    <p class="tip-line mt-1" style="opacity:0.6">(Set ANTHROPIC_API_KEY for personalized AI recommendations)</p>
+  {% endif %}
+
+  {% if final_pick.yelp_url %}
+    <a class="yelp-link" href="{{ final_pick.yelp_url }}" target="_blank" rel="noopener">
+      View on Yelp →
+    </a>
+  {% endif %}
+</div>
+
+<!-- Runner-up -->
+{% if recommendation and recommendation.get('runner_up') %}
+  <div class="runner-up-bar">
+    <strong>🥈 Runner-up: {{ recommendation.runner_up }}</strong> —
+    {{ recommendation.runner_up_reason }}
+  </div>
+{% endif %}
+
+<!-- ── RANKINGS TABLE ─────────────────────────────────────────────── -->
+<div class="sec-head mt-4">
+  <h2>Full Rankings</h2>
+  <span>Rating 50% · Reviews 30% · Price Fit 20%</span>
+</div>
+
+<div class="card" style="padding:0; overflow:hidden;">
+  <table class="rtable">
+    <thead>
+      <tr>
+        <th style="width:42px">#</th>
+        <th>Restaurant</th>
+        <th>Rating</th>
+        <th>Price</th>
+        <th>Score</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in top5 %}
+        <tr class="{% if loop.index == 1 %}top{% endif %}">
+          <td>
+            <span class="rank-badge
+              {% if loop.index==1 %}rk1{% elif loop.index==2 %}rk2{% elif loop.index==3 %}rk3{% else %}rkn{% endif %}">
+              {{ loop.index }}
+            </span>
+          </td>
+          <td>
+            <div class="name-cell">
+              {% if r.yelp_url %}
+                <a href="{{ r.yelp_url }}" target="_blank" rel="noopener">{{ r.name }}</a>
+              {% else %}{{ r.name }}{% endif %}
+            </div>
+            {% if r.address and r.address != 'N/A' %}
+              <div class="addr">{{ r.address }}</div>
+            {% endif %}
+          </td>
+          <td>
+            <span class="rating-val">★ {{ "%.1f"|format(r.rating) }}</span>
+            <span class="muted" style="font-size:0.78rem"> ({{ "{:,}".format(r.review_count|int) }})</span>
+          </td>
+          <td>
+            {% set pn = r.price_num|int %}
+            <span class="price-badge p{{ pn if pn > 0 else 1 }}">{{ r.price }}</span>
+          </td>
+          <td>
+            <div class="sbar">
+              <div class="sbar-bg">
+                <div class="sbar-fill" style="width:{{ (r.score * 100)|round|int }}%"></div>
+              </div>
+              <span class="sbar-num">{{ "%.3f"|format(r.score) }}</span>
+            </div>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Avoid note -->
+{% if recommendation and recommendation.get('avoid') and not recommendation.get('error') %}
+  <div class="avoid-note">⚠️ {{ recommendation.avoid }}</div>
+{% endif %}
+
+<!-- ── CHARTS ─────────────────────────────────────────────────────── -->
+<div class="sec-head mt-4">
+  <h2>Visual Comparison</h2>
+  <span>Top 5 restaurants</span>
+</div>
+
+<div class="charts-grid">
+  <div class="chart-box">
+    <h3>Composite Score — Top 5</h3>
+    <img src="{{ url_for('chart', session_id=session_id) }}"
+         alt="Bar chart of top restaurant scores" />
+  </div>
+  <div class="chart-box">
+    <h3>Head-to-Head Radar</h3>
+    <iframe class="radar-frame"
+            src="{{ url_for('radar', session_id=session_id) }}"
+            title="Radar comparison chart"></iframe>
+  </div>
+</div>
+
+<!-- Actions -->
+<div class="text-center mt-4" style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+  <a href="{{ url_for('home') }}" class="btn btn-coral btn-lg">🔍 New Search</a>
+  {% if current_user.is_authenticated %}
+    <a href="{{ url_for('history') }}" class="btn btn-ghost btn-lg">📋 My History</a>
+  {% else %}
+    <a href="{{ url_for('register') }}" class="btn btn-ocean btn-lg">💾 Save Results — Sign Up</a>
+  {% endif %}
+</div>
+
+{% endblock %}

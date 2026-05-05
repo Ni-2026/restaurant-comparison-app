@@ -1,0 +1,20 @@
+name,rating,review_count,price,address,phone,yelp_url,price_num,rating_norm,review_norm,price_fit,score,rank
+Musubi Cafe Iyasume,4.5,5400,$,"Pacific Monarch, Waikiki",N/A,https://www.yelp.com/biz/musubi-cafe-iyasume-honolulu-24?osq=japanese,1,0.8000000000000007,0.8105444195865816,1.0,0.8432,1
+Marugame Udon,4.5,14100,$$,"Kuhio Banyan Hotel, Waikiki",N/A,https://www.yelp.com/biz/marugame-udon-honolulu-15?osq=japanese,2,0.8000000000000007,1.0,0.7,0.84,2
+Tonkatsu Tamafuji,4.6,2400,$$$,"Hee Hing Plaza, Kaimuki",N/A,https://www.yelp.com/biz/tonkatsu-tamafuji-honolulu-9?osq=japanese,3,1.0,0.6504969473486335,0.3,0.7551,3
+Izakaya Tenkichi,4.6,239,$$,Mo'ili'ili,N/A,https://www.yelp.com/biz/izakaya-tenkichi-honolulu?osq=japanese,2,1.0,0.19584030505867686,0.7,0.6988,4
+Totoya,4.6,301,N/A,Kaimuki,N/A,https://www.yelp.com/biz/totoya-honolulu-2?osq=japanese,0,1.0,0.24120487621879283,0.5,0.6724,5
+ABURIYA IBUSHI,4.5,433,$$,Kaimuki,N/A,https://www.yelp.com/biz/aburiya-ibushi-honolulu?osq=japanese,2,0.8000000000000007,0.3127925196545158,0.7,0.6338,6
+Akira Japanese Restaurant,4.5,338,N/A,eleven50 Building,N/A,https://www.yelp.com/biz/akira-japanese-restaurant-honolulu-2?osq=japanese,0,0.8000000000000007,0.2640212178914056,0.5,0.5792,7
+I-NABA,4.4,796,$$,Honolulu,N/A,https://www.yelp.com/biz/i-naba-honolulu?osq=japanese,2,0.6000000000000014,0.43278588430932713,0.7,0.5698,8
+Little Plum,4.5,272,N/A,Manoa,N/A,https://www.yelp.com/biz/little-plum-honolulu?osq=japanese,0,0.8000000000000007,0.22127438164597912,0.5,0.5664,9
+Zigu,4.4,875,$$$,Waikiki,N/A,https://www.yelp.com/biz/zigu-honolulu-2?osq=japanese,3,0.6000000000000014,0.4514442473537363,0.3,0.4954,10
+Ginza Bairin Tonkatsu & Yoshoku Bistro,4.3,4200,$$$,"Outrigger Regency on Beachwalk, Waikiki",N/A,https://www.yelp.com/biz/ginza-bairin-tonkatsu-and-yoshoku-bistro-honolulu-5?osq=japanese,3,0.40000000000000036,0.760940580974728,0.3,0.4883,11
+Minatoku Kitchen,4.4,88,$$,Mo'ili'ili,N/A,https://www.yelp.com/biz/minatoku-kitchen-honolulu-3?osq=japanese,2,0.6000000000000014,0.0,0.7,0.44,12
+Momosan Waikiki,4.3,1300,$$$,"Alohilani Resort Waikiki Beach, Waikiki",N/A,https://www.yelp.com/biz/momosan-waikiki-honolulu?osq=japanese,3,0.40000000000000036,0.5295279425605396,0.3,0.4189,13
+Yoshitsune Restaurant,4.3,801,$$$,"Park Shore Waikiki, Waikiki",N/A,https://www.yelp.com/biz/yoshitsune-honolulu?osq=japanese,3,0.40000000000000036,0.4340205296977497,0.3,0.3902,14
+Izakaya Harumi,4.3,385,N/A,Waikiki,N/A,https://www.yelp.com/biz/izakaya-harumi-honolulu?osq=japanese,0,0.40000000000000036,0.28965358035061456,0.5,0.3869,15
+Teishoku,4.2,696,$$,"Kamehameha Shopping Center, Kalihi",N/A,https://www.yelp.com/biz/teishoku-honolulu?osq=japanese,2,0.20000000000000107,0.406318042815993,0.7,0.3619,16
+Kaimuki Shokudo,4.2,439,$$,Kaimuki,N/A,https://www.yelp.com/biz/kaimuki-shokudo-honolulu-2?osq=japanese,2,0.20000000000000107,0.3155031227059014,0.7,0.3347,17
+Rinka,4.1,636,$$,"Ae'o Tower, Kaka'ako",N/A,https://www.yelp.com/biz/rinka-honolulu-5?osq=japanese,2,0.0,0.38854720856559144,0.7,0.2566,18
+Marujuu,4.2,93,$$,Kaimuki,N/A,https://www.yelp.com/biz/marujuu-honolulu?osq=japanese,2,0.20000000000000107,0.010790617570978827,0.7,0.2432,19

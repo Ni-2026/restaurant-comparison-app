@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Log In — Hawaii Eats{% endblock %}
+{% block head %}
+<style>
+  .auth-wrap { max-width: 420px; margin: 1.5rem auto; }
+  .auth-top { text-align: center; margin-bottom: 1.75rem; }
+  .auth-top .icon { font-size: 2.5rem; display: block; margin-bottom: 0.5rem; }
+  .auth-top h1 { font-size: 1.8rem; }
+  .auth-top p { color: var(--muted); font-size: 0.9rem; margin-top: 0.35rem; }
+  .remember { display: flex; align-items: center; gap: 0.45rem; margin-bottom: 1.2rem; }
+  .remember input { accent-color: var(--ocean-mid); width:15px; height:15px; }
+  .remember label { font-weight:400; text-transform:none; letter-spacing:0; font-size:0.9rem; color:var(--text); }
+  .auth-footer { text-align: center; margin-top: 1.1rem; font-size: 0.88rem; color: var(--muted); }
+</style>
+{% endblock %}
+{% block content %}
+<div class="auth-wrap">
+  <div class="auth-top">
+    <span class="icon">🌺</span>
+    <h1>Welcome back</h1>
+    <p>Log in to see your saved recommendations</p>
+  </div>
+  <div class="card">
+    <form method="POST">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required autocomplete="username" placeholder="Your username" />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required placeholder="Your password" />
+      </div>
+      <div class="remember">
+        <input type="checkbox" id="remember" name="remember" />
+        <label for="remember">Keep me logged in</label>
+      </div>
+      <button type="submit" class="btn btn-ocean btn-full btn-lg">Log In</button>
+    </form>
+  </div>
+  <div class="auth-footer">
+    New to Hawaii Eats? <a href="{{ url_for('register') }}">Create an account →</a>
+  </div>
+</div>
+{% endblock %}

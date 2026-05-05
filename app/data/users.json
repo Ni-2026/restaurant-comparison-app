@@ -1,0 +1,39 @@
+{
+  "saraab": {
+    "email": "saraab@hawaii.edu",
+    "password_hash": "scrypt:32768:8:1$MU2iiO5VGwqiuAgx$8a7804b682f406e3feadd5069734eb69f12702a12df6d195a5ca497632e93a2597d8f3d9ed15bd48b0cccec1116822d65da883d3aa380113332db7a398ba1fc8",
+    "location": "",
+    "budget": 2,
+    "restrictions": [],
+    "created_at": "2026-05-04T19:17:19.017200",
+    "history": [
+      {
+        "session_id": "c9d7a5cf",
+        "cuisine": "japanese",
+        "location": "Honolulu, HI",
+        "budget": 2,
+        "top_pick": "Marugame Udon",
+        "score": 0.9,
+        "saved_at": "2026-05-04T19:17:56.322116"
+      },
+      {
+        "session_id": "69cb9622",
+        "cuisine": "american",
+        "location": "Honolulu, HI",
+        "budget": 1,
+        "top_pick": "Musubi Cafe Iyasume",
+        "score": 0.843,
+        "saved_at": "2026-05-04T19:18:53.595224"
+      },
+      {
+        "session_id": "9655613b",
+        "cuisine": "korean",
+        "location": "Kailua, HI",
+        "budget": 3,
+        "top_pick": "Adela’s Country Eatery",
+        "score": 0.94,
+        "saved_at": "2026-05-04T19:19:40.958603"
+      }
+    ]
+  }
+}

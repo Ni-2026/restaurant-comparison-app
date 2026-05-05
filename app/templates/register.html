@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Create Account — Hawaii Eats{% endblock %}
+{% block head %}
+<style>
+  .auth-wrap { max-width: 440px; margin: 1.5rem auto; }
+  .auth-top { text-align: center; margin-bottom: 1.75rem; }
+  .auth-top .icon { font-size: 2.5rem; display: block; margin-bottom: 0.5rem; }
+  .auth-top h1 { font-size: 1.8rem; }
+  .auth-top p { color: var(--muted); font-size: 0.9rem; margin-top: 0.35rem; }
+  .auth-footer { text-align: center; margin-top: 1.1rem; font-size: 0.88rem; color: var(--muted); }
+  .hint { font-size: 0.77rem; color: var(--muted); margin-top: 0.25rem; }
+</style>
+{% endblock %}
+{% block content %}
+<div class="auth-wrap">
+  <div class="auth-top">
+    <span class="icon">🌴</span>
+    <h1>Create your account</h1>
+    <p>Save recommendations and personalize future searches</p>
+  </div>
+  <div class="card">
+    <form method="POST">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required autocomplete="username"
+               placeholder="e.g. aloha_foodie" minlength="3" />
+        <p class="hint">At least 3 characters</p>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required placeholder="you@example.com" />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required
+               placeholder="At least 6 characters" minlength="6" />
+      </div>
+      <div class="form-group">
+        <label for="confirm">Confirm Password</label>
+        <input type="password" id="confirm" name="confirm" required placeholder="Repeat password" />
+      </div>
+      <button type="submit" class="btn btn-coral btn-full btn-lg" style="margin-top:0.4rem">
+        Create Account
+      </button>
+    </form>
+  </div>
+  <div class="auth-footer">
+    Already have an account? <a href="{{ url_for('login') }}">Log in →</a>
+  </div>
+</div>
+{% endblock %}

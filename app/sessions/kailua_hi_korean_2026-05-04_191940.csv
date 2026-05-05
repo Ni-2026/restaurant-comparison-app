@@ -1,0 +1,21 @@
+name,rating,review_count,price,address,phone,yelp_url,price_num,rating_norm,review_norm,price_fit,score,rank
+Adela’s Country Eatery,4.8,3800,$$,Windward Square,N/A,https://www.yelp.com/biz/adela-s-country-eatery-kaneohe?osq=korean,2,1.0,1.0,0.7,0.94,1
+Easy ‘Que,4.5,728,$$,Kailua,N/A,https://www.yelp.com/biz/easy-que-kailua?osq=korean,2,0.8333333333333334,0.5851244099068339,0.7,0.7322,2
+Hot Pot Heaven - Kailua,4.8,138,$$,Windward Town & Country Plaza,N/A,https://www.yelp.com/biz/hot-pot-heaven-kailua-kailua?osq=korean,2,1.0,0.16877807548089319,0.7,0.6906,3
+Willow Tree Korean Restaurant,4.4,597,$$,Aikahi Park Shopping Center,N/A,https://www.yelp.com/biz/willow-tree-korean-restaurant-kailua?osq=korean,2,0.777777777777778,0.5353590636387062,0.7,0.6895,4
+Saigon Noodle House,4.4,440,$$,Enchanted Lake Shopping Center,N/A,https://www.yelp.com/biz/saigon-noodle-house-kailua?osq=korean,2,0.777777777777778,0.45884652709035006,0.7,0.6665,5
+Uahi Island Grill,4.2,886,$$,Kailua,N/A,https://www.yelp.com/biz/uahi-island-grill-kailua-5?osq=korean,2,0.6666666666666669,0.6344094635484295,0.7,0.6637,6
+The Food Company Restaurant & Catering,4.4,317,$$,Kailua,N/A,https://www.yelp.com/biz/the-food-company-restaurant-and-catering-kailua?osq=korean,2,0.777777777777778,0.3766943676795893,0.7,0.6419,7
+Kim Chee Restaurant,4.5,219,$$,Enchanted Lake Shopping Center,N/A,https://www.yelp.com/biz/kim-chee-restaurant-kailua?osq=korean,2,0.8333333333333334,0.28413346228018027,0.7,0.6419,8
+Rai Rai Ramen,4.2,449,$$,Kailua,N/A,https://www.yelp.com/biz/rai-rai-ramen-kailua?osq=korean,2,0.6666666666666669,0.46392215112966284,0.7,0.6125,9
+K and K Bar-B-Que Inn,4.3,252,$$,Kailua,N/A,https://www.yelp.com/biz/k-and-k-bar-b-que-inn-kailua?osq=korean,2,0.7222222222222222,0.31924653219458937,0.7,0.5969,10
+Moonga Asian Bistro,4.2,215,$$,Kaneohe,N/A,https://www.yelp.com/biz/moonga-asian-bistro-kaneohe?osq=korean,2,0.6666666666666669,0.27952351927297653,0.7,0.5572,11
+Ohana Karaoke Grill & Bar,4.5,70,$$,Waimanalo Town Center,N/A,https://www.yelp.com/biz/ohana-karaoke-grill-and-bar-waimanalo?osq=korean,2,0.8333333333333334,0.0,0.7,0.5567,12
+Gyu-Kaku Japanese BBQ,3.6,651,$$$,Windward Mall,N/A,https://www.yelp.com/biz/gyu-kaku-japanese-bbq-kaneohe?osq=korean,3,0.3333333333333334,0.5570792726758733,1.0,0.5338,13
+Daiichi Ramen - Kailua,3.8,337,$$,Aikahi Park Shopping Center,N/A,https://www.yelp.com/biz/daiichi-ramen-kailua-kailua?osq=korean,2,0.44444444444444436,0.39201831461774284,0.7,0.4798,14
+Oh My Grill - Kailua,3.9,128,$$,Kailua,N/A,https://www.yelp.com/biz/oh-my-grill-kailua-kailua-3?osq=korean,2,0.5,0.15002049788121882,0.7,0.435,15
+Yakiniku Cho Dang,3.5,414,$$,Kaneohe Shopping Center,N/A,https://www.yelp.com/biz/yakiniku-cho-dang-kaneohe?osq=korean,2,0.2777777777777778,0.4435799012629769,0.7,0.412,16
+Blossom's Okazuya,4.2,89,$,Keolu Shopping Center,N/A,https://www.yelp.com/biz/blossoms-okazuya-kailua?osq=korean,1,0.6666666666666669,0.059575266836189945,0.3,0.4112,17
+Yoonyson Korean BBQ,3.6,146,$,Windward City Shopping Center,N/A,https://www.yelp.com/biz/yoonyson-korean-bbq-kaneohe?osq=korean,1,0.3333333333333334,0.18283683915051743,0.3,0.2815,18
+Tasty Korean BBQ 3,3.2,172,$$,Windward Mall,N/A,https://www.yelp.com/biz/tasty-korean-bbq-3-kaneohe?osq=korean,2,0.11111111111111122,0.2237526966940548,0.7,0.2627,19
+Bull Kogi Korean Fusion,3.0,202,$$,Kaneohe,N/A,https://www.yelp.com/biz/bull-kogi-korean-fusion-kaneohe?osq=korean,2,0.0,0.2639287622909471,0.7,0.2192,20

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}History — Hawaii Eats{% endblock %}
+{% block head %}
+<style>
+  .page-header { margin-bottom: 1.75rem; }
+  .page-header h1 { font-size: 1.8rem; margin-bottom: 0.25rem; }
+  .history-list { display: flex; flex-direction: column; gap: 0.85rem; }
+  .h-card {
+    background: var(--white);
+    border-radius: var(--r);
+    box-shadow: var(--shadow-sm);
+    padding: 1.1rem 1.4rem;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    transition: box-shadow 0.18s, transform 0.12s;
+  }
+  .h-card:hover { box-shadow: var(--shadow); transform: translateY(-1px); }
+  .h-left { flex: 1; }
+  .h-name { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.28rem; }
+  .h-meta { font-size: 0.83rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 0.7rem; }
+  .h-meta span { display: flex; align-items: center; gap: 0.25rem; }
+  .score-ring {
+    width: 50px; height: 50px; border-radius: 50%;
+    border: 3px solid var(--ocean);
+    background: var(--ocean-pale);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    color: var(--ocean); font-weight: 700;
+  }
+  .score-ring .snum { font-size: 0.95rem; line-height: 1; }
+  .score-ring .slabel { font-size: 0.62rem; opacity: 0.7; }
+  .empty {
+    text-align: center; padding: 4rem 1rem; color: var(--muted);
+  }
+  .empty .e-icon { font-size: 3rem; display: block; margin-bottom: 1rem; }
+  .empty p { margin-bottom: 1.5rem; }
+</style>
+{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Your History</h1>
+  <p class="muted">{{ history|length }} past recommendation{{ 's' if history|length != 1 else '' }}</p>
+</div>
+
+{% if history %}
+  <div class="history-list">
+    {% for e in history %}
+      <div class="h-card">
+        <div class="h-left">
+          <div class="h-name">🏆 {{ e.top_pick or 'Unknown' }}</div>
+          <div class="h-meta">
+            <span>🍽 {{ e.cuisine.replace('_',' ').title() if e.cuisine else '—' }}</span>
+            <span>📍 {{ e.location or '—' }}</span>
+            <span>💵 {{ ['$','$$','$$$','$$$$'][(e.budget or 2)-1] }}</span>
+            <span>🕐 {{ e.saved_at[:10] if e.saved_at else '' }}</span>
+          </div>
+        </div>
+        <div class="score-ring">
+          <span class="snum">{{ "%.2f"|format(e.score|float) }}</span>
+          <span class="slabel">score</span>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  <div class="text-center mt-4">
+    <a href="{{ url_for('home') }}" class="btn btn-coral">🔍 New Search</a>
+  </div>
+{% else %}
+  <div class="empty">
+    <span class="e-icon">🍜</span>
+    <h2>No searches yet</h2>
+    <p>Run your first search and your recommendation history will appear here.</p>
+    <a href="{{ url_for('home') }}" class="btn btn-ocean">Start Searching</a>
+  </div>
+{% endif %}
+{% endblock %}
