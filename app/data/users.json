@@ -35,5 +35,51 @@
         "saved_at": "2026-05-04T19:19:40.958603"
       }
     ]
+  },
+  "aloha": {
+    "email": "nh42@hawaii.edu",
+    "password_hash": "scrypt:32768:8:1$23qecIOq1FaeknVp$d9f119022e710f17deda877e9e93d75f8bd108eb642828c88d9d52b3802815230b15f4de1213b6727668b495c3b2e3f45da9a9b064b6394922e1c00e5d6eb9de",
+    "location": "Honolulu, HI",
+    "budget": 2,
+    "restrictions": [],
+    "created_at": "2026-05-05T10:07:52.297981",
+    "history": [
+      {
+        "session_id": "9e568ca1",
+        "cuisine": "japanese",
+        "location": "Honolulu, HI",
+        "budget": 2,
+        "top_pick": "Marugame Udon",
+        "score": 0.9,
+        "saved_at": "2026-05-05T10:08:41.440669"
+      },
+      {
+        "session_id": "f5f6f2c4",
+        "cuisine": "japanese",
+        "location": "Honolulu, HI",
+        "budget": 2,
+        "top_pick": "Marugame Udon",
+        "score": 0.9,
+        "saved_at": "2026-05-05T10:09:49.186210"
+      },
+      {
+        "session_id": "c57b0a4a",
+        "cuisine": "japanese",
+        "location": "Honolulu, HI",
+        "budget": 3,
+        "top_pick": "Tonkatsu Tamafuji",
+        "score": 0.895,
+        "saved_at": "2026-05-05T10:09:54.797775"
+      },
+      {
+        "session_id": "9c290ca2",
+        "cuisine": "japanese",
+        "location": "Honolulu, HI",
+        "budget": 4,
+        "top_pick": "Tonkatsu Tamafuji",
+        "score": 0.835,
+        "saved_at": "2026-05-05T10:10:00.759750"
+      }
+    ]
   }
 }
