@@ -1,0 +1,21 @@
+name,rating,review_count,price,address,phone,yelp_url,price_num,rating_norm,review_norm,price_fit,score,rank
+Kalapawai Café & Deli,4.2,1400,$$,Kailua,N/A,https://www.yelp.com/biz/kalapawai-caf%C3%A9-and-deli-kailua-7?osq=italian,2,0.8,0.8880090807770474,1.0,0.8664,1
+Paia Fish Market Kailua,4.4,340,$$,Kailua,N/A,https://www.yelp.com/biz/paia-fish-market-kailua-kailua?osq=italian,2,0.8500000000000001,0.6964876112467632,1.0,0.8339,2
+Haleiwa Joe's At Haiku Gardens,4.1,3200,$$$,Kaneohe,N/A,https://www.yelp.com/biz/haleiwa-joes-at-haiku-gardens-kaneohe-3?osq=italian,3,0.7749999999999999,1.0,0.7,0.8275,3
+Frank’s Franks Brooklyn Italian Food,5.0,43,$$,Kailua,N/A,https://www.yelp.com/biz/frank-s-franks-brooklyn-italian-food-kailua-2?osq=italian,2,1.0,0.4189499264487367,1.0,0.8257,4
+Baci Bistro,4.0,813,$$,Kailua,N/A,https://www.yelp.com/biz/baci-bistro-kailua?osq=italian,2,0.75,0.8144151625450213,1.0,0.8193,5
+Lanikai Brewing,4.2,262,$$,Kailua,N/A,https://www.yelp.com/biz/lanikai-brewing-kailua-4?osq=italian,2,0.8,0.6612848553430136,1.0,0.7984,6
+Buzz's,3.4,1600,$$,Kailua,N/A,https://www.yelp.com/biz/buzzs-kailua-3?osq=italian,2,0.6,0.9060954017353717,1.0,0.7718,7
+Zia's European Caffe Kaneohe,3.7,634,$$,Kaneohe,N/A,https://www.yelp.com/biz/zias-european-caffe-kaneohe-kaneohe?osq=italian,2,0.675,0.7807565876935971,1.0,0.7717,8
+Bob's Pizzeria,4.1,600,$,Kailua,N/A,https://www.yelp.com/biz/bobs-pizzeria-kailua?osq=italian,1,0.7749999999999999,0.7732979902259406,0.7,0.7595,9
+Nico's Kailua,3.6,604,$$,Kailua,N/A,https://www.yelp.com/biz/nicos-kailua-kailua-2?osq=italian,2,0.65,0.7741970766094267,1.0,0.7573,10
+Onda Pasta,4.6,23,$$,Honolulu,N/A,https://www.yelp.com/biz/onda-pasta-honolulu?osq=italian,2,0.8999999999999999,0.3367962342379321,1.0,0.751,11
+Assaggio Italian Restaurant,3.5,381,$$,Kailua,N/A,https://www.yelp.com/biz/assaggio-italian-restaurant-kailua?osq=italian,2,0.625,0.7118762034400675,1.0,0.7261,12
+Kailua Town Pub & Grill,3.3,543,$$,Kailua,N/A,https://www.yelp.com/biz/kailua-town-pub-and-grill-kailua?osq=italian,2,0.575,0.759792335045176,1.0,0.7154,13
+The Garden at Boardroom,4.2,100,$,Kailua,N/A,https://www.yelp.com/biz/the-garden-at-boardroom-kailua-2?osq=italian,1,0.8,0.5315716188186862,0.7,0.6995,14
+Nonna’s,5.0,12,N/A,Kalihi,N/A,https://www.yelp.com/biz/nonna-s-honolulu?osq=italian,0,1.0,0.2536980310598804,0.5,0.6761,15
+Gaslamp,4.1,506,$$$$,Kailua,N/A,https://www.yelp.com/biz/gaslamp-kailua?osq=italian,4,0.7749999999999999,0.7502453626951563,0.3,0.6726,16
+California Pizza Kitchen,2.7,626,$$,Kailua Town Center,N/A,https://www.yelp.com/biz/california-pizza-kitchen-kailua-4?osq=italian,2,0.42500000000000004,0.779038190345271,1.0,0.6462,17
+Formaggio Grill,3.1,666,$$$,Kailua,N/A,https://www.yelp.com/biz/formaggio-grill-kailua?osq=italian,3,0.525,0.78742025962464,0.7,0.6387,18
+Nomadic,3.6,22,N/A,Kailua,N/A,https://www.yelp.com/biz/nomadic-kailua?osq=italian,0,0.65,0.33102784134152613,0.5,0.5243,19
+Parma Italian Restaurant,1.0,1,N/A,Kailua,N/A,https://www.yelp.com/biz/parma-italian-restaurant-kailua?osq=italian,0,0.0,0.0,0.5,0.1,20
