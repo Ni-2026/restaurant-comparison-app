@@ -81,5 +81,45 @@
         "saved_at": "2026-05-05T10:10:00.759750"
       }
     ]
+  },
+  "grace123": {
+    "email": "gracek87@hawaii.edu",
+    "password_hash": "scrypt:32768:8:1$gejEc6ZP0HlVRdRN$e4fc95bbad4966f2c1b8a966ffb6f1657e81c8fa5b555b4c1798a2ea60cb34fe7f02532f5ec94c7047fe4ee999cc906a915592c5972b48aa11fc3b366e466267",
+    "location": "",
+    "budget": 1,
+    "restrictions": [
+      "gluten-free",
+      "kosher"
+    ],
+    "created_at": "2026-05-05T12:19:48.040036",
+    "history": [
+      {
+        "session_id": "b74ca2db",
+        "cuisine": "japanese",
+        "location": "Honolulu, HI",
+        "budget": 2,
+        "top_pick": "Marugame Udon",
+        "score": 0.875,
+        "saved_at": "2026-05-05T12:20:25.401641"
+      },
+      {
+        "session_id": "4fd28541",
+        "cuisine": "japanese",
+        "location": "Honolulu, HI",
+        "budget": 2,
+        "top_pick": "Marugame Udon",
+        "score": 0.875,
+        "saved_at": "2026-05-05T12:37:15.991508"
+      }
+    ]
+  },
+  "grace1111": {
+    "email": "gracek@gmail.com",
+    "password_hash": "scrypt:32768:8:1$4OJIZtlUpaGvcaB9$991e9a27e9b4aff5e6ec7fe89eaf65f076c8e772fade7d3344cd69b88b6b342016808f198de408c89e5da2d58d5b85b765a0d51b4e5c80719811885dce080b81",
+    "location": "",
+    "budget": 2,
+    "restrictions": [],
+    "created_at": "2026-05-05T12:35:54.386665",
+    "history": []
   }
 }

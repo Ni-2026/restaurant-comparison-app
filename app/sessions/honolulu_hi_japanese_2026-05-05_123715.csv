@@ -1,0 +1,11 @@
+name,rating,review_count,price,address,phone,yelp_url,price_num,rating_norm,review_norm,price_fit,score,rank
+Marugame Udon,4.5,14070,$$,Waikiki,(808) 931-6000,https://www.yelp.com/biz/marugame-udon-honolulu-15?osq=japanese,2,0.7500000000000006,1.0,1.0,0.875,1
+Tonkatsu Tamafuji,4.6,2428,$$$,Kaimuki,(808) 922-1212,https://www.yelp.com/biz/tonkatsu-tamafuji-honolulu-9?osq=japanese,3,1.0,0.5540109520309263,0.7,0.8062,2
+ABURIYA IBUSHI,4.5,433,$$,Kaimuki,(808) 738-1038,https://www.yelp.com/biz/aburiya-ibushi-honolulu?osq=japanese,2,0.7500000000000006,0.11676730732473103,1.0,0.61,3
+Totoya,4.6,301,N/A,Kaimuki,(808) 600-5017,https://www.yelp.com/biz/totoya-honolulu-2?osq=japanese,0,1.0,0.024703035501622568,0.5,0.6074,4
+I-NABA,4.4,797,$$,N/A,(808) 953-2070,https://www.yelp.com/biz/i-naba-honolulu?osq=japanese,2,0.5000000000000011,0.27140142426488995,1.0,0.5314,5
+Little Plum,4.5,273,N/A,Manoa,(808) 888-0330,https://www.yelp.com/biz/little-plum-honolulu?osq=japanese,0,0.7500000000000006,0.0,0.5,0.475,6
+Ginza Bairin Tonkatsu & Yoshoku Bistro,4.3,4151,$$$,Waikiki,(808) 926-8082,https://www.yelp.com/biz/ginza-bairin-tonkatsu-and-yoshoku-bistro-honolulu-5?osq=japanese,3,0.24999999999999944,0.6901230264344365,0.7,0.472,7
+Yoshitsune Restaurant,4.3,801,$$$,Waikiki,(808) 926-5616,https://www.yelp.com/biz/yoshitsune-honolulu?osq=japanese,3,0.24999999999999944,0.27267086740232777,0.7,0.3468,8
+Izakaya Harumi,4.3,387,N/A,Waikiki,(808) 764-3073,https://www.yelp.com/biz/izakaya-harumi-honolulu?osq=japanese,0,0.24999999999999944,0.08832188927562998,0.5,0.2515,9
+Kaimuki Shokudo,4.2,439,$$,Kaimuki,(808) 367-0966,https://www.yelp.com/biz/kaimuki-shokudo-honolulu-2?osq=japanese,2,0.0,0.12025323987049755,1.0,0.2361,10
