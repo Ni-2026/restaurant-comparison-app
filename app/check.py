@@ -9,6 +9,8 @@ import sys
 # Format: "import_name": "pip install name"  (they differ for some packages)
 REQUIRED = {
     "flask":            "flask",
+    "flask_login":      "flask-login",
+    "werkzeug":         "werkzeug",
     "serpapi":          "google-search-results",
     "pandas":           "pandas",
     "numpy":            "numpy",

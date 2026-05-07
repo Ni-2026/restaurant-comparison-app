@@ -1,4 +1,6 @@
 flask
+flask-login
+werkzeug
 google-search-results
 pandas
 numpy
