@@ -1,0 +1,333 @@
+{% extends "base.html" %}
+{% block title %}Compare Restaurants — Hawaii Eats{% endblock %}
+{% block head %}
+<style>
+  /* ── Comparison Header ──────────────────────────────────────────────── */
+  .compare-header {
+    background: linear-gradient(135deg, var(--ocean) 0%, #0f7e95 100%);
+    border-radius: var(--r);
+    color: var(--white);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+  }
+  .compare-header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+  .compare-header p { font-size: 1rem; opacity: 0.9; }
+
+  /* ── Comparison Grid ────────────────────────────────────────────────── */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  /* ── Restaurant Card ────────────────────────────────────────────────── */
+  .compare-card {
+    background: var(--white);
+    border-radius: var(--r);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .compare-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+
+  .card-image {
+    width: 100%;
+    height: 180px;
+    background: var(--sand-mid);
+    overflow: hidden;
+    position: relative;
+  }
+  .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .card-image-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    opacity: 0.3;
+  }
+
+  .card-body {
+    padding: 1.5rem;
+  }
+  .card-name { font-size: 1.3rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--ocean); }
+  .card-name a { color: var(--ocean); text-decoration: none; }
+  .card-name a:hover { text-decoration: underline; }
+
+  .card-meta { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+  .meta-row { display: flex; align-items: center; margin-bottom: 0.5rem; }
+  .meta-row strong { color: var(--text); min-width: 80px; }
+
+  .rating-pill {
+    background: #ffd600;
+    color: #5a3d00;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    display: inline-block;
+  }
+
+  .score-bar {
+    background: var(--sand-mid);
+    border-radius: 4px;
+    height: 8px;
+    margin: 0.75rem 0;
+    overflow: hidden;
+  }
+  .score-fill {
+    height: 100%;
+    background: var(--ocean-mid);
+    border-radius: 4px;
+  }
+
+  .contact-section {
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    margin-top: 1rem;
+    font-size: 0.85rem;
+  }
+  .contact-link {
+    display: inline-block;
+    margin-right: 0.75rem;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--ocean-pale);
+    color: var(--ocean);
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .contact-link:hover { background: var(--ocean); color: var(--white); }
+
+  /* ── Feature Comparison Table ────────────────────────────────────────── */
+  .features-section {
+    background: var(--white);
+    border-radius: var(--r);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .features-section h2 {
+    padding: 1.5rem;
+    background: var(--sand-light);
+    border-bottom: 2px solid var(--border);
+    margin: 0;
+    font-size: 1.3rem;
+  }
+
+  .feature-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .feature-table th {
+    background: var(--sand-light);
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .feature-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--sand-mid);
+    font-size: 0.95rem;
+  }
+  .feature-table tr:last-child td { border-bottom: none; }
+  .feature-name {
+    font-weight: 600;
+    color: var(--text);
+    width: 150px;
+  }
+  .feature-value {
+    text-align: center;
+  }
+
+  /* ── Back Button ────────────────────────────────────────────────────── */
+  .back-section {
+    margin-top: 2rem;
+    text-align: center;
+  }
+  .back-section a {
+    background: var(--ocean);
+    color: var(--white);
+    padding: 0.8rem 2rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-block;
+    transition: background 0.2s;
+  }
+  .back-section a:hover { background: #0a6a7e; }
+
+  @media (max-width: 768px) {
+    .compare-grid { grid-template-columns: 1fr; }
+    .compare-header h1 { font-size: 1.5rem; }
+    .feature-table { font-size: 0.85rem; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="compare-header">
+  <h1>🤝 Restaurant Comparison</h1>
+  <p>Your 5 selected restaurants side-by-side</p>
+</div>
+
+<!-- Restaurant Cards -->
+<div class="compare-grid" id="compareGrid">
+  <!-- Cards populated by JavaScript -->
+</div>
+
+<!-- Feature Comparison Table -->
+<div class="features-section">
+  <h2>📊 Head-to-Head Comparison</h2>
+  <table class="feature-table">
+    <thead>
+      <tr>
+        <th class="feature-name">Feature</th>
+        <th class="feature-value" id="name-0"></th>
+        <th class="feature-value" id="name-1"></th>
+        <th class="feature-value" id="name-2"></th>
+        <th class="feature-value" id="name-3"></th>
+        <th class="feature-value" id="name-4"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="feature-name">⭐ Rating</td>
+        <td class="feature-value" id="rating-0"></td>
+        <td class="feature-value" id="rating-1"></td>
+        <td class="feature-value" id="rating-2"></td>
+        <td class="feature-value" id="rating-3"></td>
+        <td class="feature-value" id="rating-4"></td>
+      </tr>
+      <tr>
+        <td class="feature-name">💬 Reviews</td>
+        <td class="feature-value" id="reviews-0"></td>
+        <td class="feature-value" id="reviews-1"></td>
+        <td class="feature-value" id="reviews-2"></td>
+        <td class="feature-value" id="reviews-3"></td>
+        <td class="feature-value" id="reviews-4"></td>
+      </tr>
+      <tr>
+        <td class="feature-name">💵 Price</td>
+        <td class="feature-value" id="price-0"></td>
+        <td class="feature-value" id="price-1"></td>
+        <td class="feature-value" id="price-2"></td>
+        <td class="feature-value" id="price-3"></td>
+        <td class="feature-value" id="price-4"></td>
+      </tr>
+      <tr>
+        <td class="feature-name">🎯 Score</td>
+        <td class="feature-value" id="score-0"></td>
+        <td class="feature-value" id="score-1"></td>
+        <td class="feature-value" id="score-2"></td>
+        <td class="feature-value" id="score-3"></td>
+        <td class="feature-value" id="score-4"></td>
+      </tr>
+      <tr>
+        <td class="feature-name">📍 Location</td>
+        <td class="feature-value" id="address-0"></td>
+        <td class="feature-value" id="address-1"></td>
+        <td class="feature-value" id="address-2"></td>
+        <td class="feature-value" id="address-3"></td>
+        <td class="feature-value" id="address-4"></td>
+      </tr>
+      <tr>
+        <td class="feature-name">📞 Phone</td>
+        <td class="feature-value" id="phone-0"></td>
+        <td class="feature-value" id="phone-1"></td>
+        <td class="feature-value" id="phone-2"></td>
+        <td class="feature-value" id="phone-3"></td>
+        <td class="feature-value" id="phone-4"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Back Button -->
+<div class="back-section">
+  <a href="javascript:history.back()">← Back to Results</a>
+</div>
+
+<script>
+// Get comparison data from session storage
+const comparisonData = JSON.parse(sessionStorage.getItem('comparisonData') || '[]');
+
+if (comparisonData.length !== 5) {
+  document.body.innerHTML = '<div style="padding: 2rem; text-align: center;"><p>❌ Error: Expected 5 restaurants for comparison.</p><a href="/">← Go Home</a></div>';
+} else {
+  // Populate restaurant cards
+  const grid = document.getElementById('compareGrid');
+  
+  comparisonData.forEach((restaurant, index) => {
+    const card = document.createElement('div');
+    card.className = 'compare-card';
+    card.innerHTML = `
+      <div class="card-image">
+        ${restaurant.image_url ? `<img src="${restaurant.image_url}" alt="${restaurant.name}" onerror="this.parentElement.innerHTML='<div class=&quot;card-image-fallback&quot;>🍽️</div>'" />` : '<div class="card-image-fallback">🍽️</div>'}
+      </div>
+      <div class="card-body">
+        <div class="card-name">
+          ${restaurant.yelp_url ? `<a href="${restaurant.yelp_url}" target="_blank" rel="noopener">${restaurant.name}</a>` : restaurant.name}
+        </div>
+        <div class="rating-pill">★ ${parseFloat(restaurant.rating).toFixed(1)} / 5.0</div>
+        <div class="card-meta">
+          <div class="meta-row">
+            <strong>Reviews:</strong>
+            <span>${Number(restaurant.review_count).toLocaleString()}</span>
+          </div>
+          <div class="meta-row">
+            <strong>Price:</strong>
+            <span>${restaurant.price}</span>
+          </div>
+          <div class="meta-row">
+            <strong>Score:</strong>
+            <span>${parseFloat(restaurant.score).toFixed(3)}</span>
+          </div>
+          <div style="margin: 0.75rem 0;">
+            <div class="score-bar">
+              <div class="score-fill" style="width: ${Math.round(restaurant.score * 100)}%"></div>
+            </div>
+          </div>
+        </div>
+        ${restaurant.address && restaurant.address !== 'N/A' ? `<div class="meta-row"><strong>📍</strong> ${restaurant.address}</div>` : ''}
+        <div class="contact-section">
+          ${restaurant.phone && restaurant.phone !== 'N/A' ? `<a href="tel:${restaurant.phone.replace(/[\\s\\-\\(\\)]/g, '')}" class="contact-link">📞 Call</a>` : ''}
+          ${restaurant.yelp_url ? `<a href="${restaurant.yelp_url}" target="_blank" rel="noopener" class="contact-link">View on Yelp →</a>` : ''}
+          ${restaurant.website ? `<a href="${restaurant.website}" target="_blank" rel="noopener" class="contact-link">🌐 Website</a>` : ''}
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  // Populate feature comparison table
+  comparisonData.forEach((restaurant, index) => {
+    document.getElementById(`name-${index}`).textContent = restaurant.name;
+    document.getElementById(`rating-${index}`).textContent = parseFloat(restaurant.rating).toFixed(1);
+    document.getElementById(`reviews-${index}`).textContent = Number(restaurant.review_count).toLocaleString();
+    document.getElementById(`price-${index}`).textContent = restaurant.price;
+    document.getElementById(`score-${index}`).textContent = parseFloat(restaurant.score).toFixed(3);
+    document.getElementById(`address-${index}`).textContent = restaurant.address || 'N/A';
+    document.getElementById(`phone-${index}`).innerHTML = restaurant.phone && restaurant.phone !== 'N/A' ? `<a href="tel:${restaurant.phone.replace(/[\\s\\-\\(\\)]/g, '')}" class="contact-link">${restaurant.phone}</a>` : 'N/A';
+  });
+
+  // Clear session storage after rendering
+  sessionStorage.removeItem('comparisonData');
+}
+</script>
+
+{% endblock %}

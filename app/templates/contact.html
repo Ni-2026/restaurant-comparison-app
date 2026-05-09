@@ -1,0 +1,367 @@
+{% extends "base.html" %}
+{% block title %}Contact — Hawaii Eats{% endblock %}
+{% block head %}
+<style>
+  .contact-wrap { max-width: 720px; margin: 0 auto; }
+
+  /* Hero */
+  .c-hero { text-align: center; margin-bottom: 2rem; }
+  .c-hero .icon { font-size: 3rem; display: block; margin-bottom: 0.6rem; }
+  .c-hero h1 { font-size: 2rem; color: var(--ocean); margin-bottom: 0.5rem; }
+  .c-hero p { color: var(--muted); max-width: 520px; margin: 0 auto; line-height: 1.6; }
+
+  /* Team grid */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.85rem;
+    margin-bottom: 1.75rem;
+  }
+  .team-card {
+    background: var(--white);
+    border-radius: var(--r);
+    box-shadow: var(--shadow-sm);
+    padding: 1.1rem 1rem;
+    text-align: center;
+  }
+  .team-avatar {
+    width: 50px; height: 50px; border-radius: 50%;
+    background: var(--ocean); color: var(--white);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: 'Libre Baskerville', serif; font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+  .team-card h3 { font-size: 0.96rem; font-family: 'Inter', sans-serif; font-weight: 600; margin-bottom: 0.15rem; }
+  .team-card .role { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.4rem; }
+  .team-card .email {
+    font-size: 0.78rem; color: var(--ocean);
+    word-break: break-all;
+  }
+
+  /* Form */
+  .form-card { padding: 1.75rem 2rem; }
+  .form-card h2 {
+    font-family: 'Inter', sans-serif; font-weight: 600;
+    font-size: 1.15rem; margin-bottom: 0.4rem;
+  }
+  .form-card .form-sub {
+    font-size: 0.85rem; color: var(--muted);
+    margin-bottom: 1.4rem; line-height: 1.55;
+  }
+  
+  .form-group {
+    margin-bottom: 1.2rem;
+  }
+  .form-group label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--muted);
+    margin-bottom: 0.4rem;
+  }
+  .form-group input[type="text"],
+  .form-group input[type="email"] {
+    width: 100%;
+    padding: 0.65rem 0.95rem;
+    border: 1.5px solid var(--border);
+    border-radius: var(--r-sm);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.93rem;
+    background: var(--white);
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.18s, box-shadow 0.18s;
+    box-sizing: border-box;
+  }
+  .form-group input[type="text"]:focus,
+  .form-group input[type="email"]:focus {
+    border-color: var(--ocean-mid);
+    box-shadow: 0 0 0 3px rgba(26,122,143,0.12);
+  }
+  .form-group input[type="text"]::placeholder,
+  .form-group input[type="email"]::placeholder {
+    color: var(--muted);
+  }
+
+  .recipients-strip {
+    background: var(--ocean-pale);
+    border-radius: var(--r-sm);
+    padding: 0.65rem 0.9rem;
+    font-size: 0.82rem;
+    color: var(--ocean);
+    margin-bottom: 1.2rem;
+  }
+  .recipients-strip strong { font-weight: 600; }
+
+  fieldset { 
+    border: none; 
+    padding: 0; 
+    margin: 0;
+  }
+  fieldset legend {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--muted);
+    margin-bottom: 0.4rem;
+    padding: 0;
+  }
+
+  .topic-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    margin-top: 0.4rem;
+  }
+  .topic-tile input { display: none; }
+  .topic-tile label {
+    display: block; 
+    text-align: center;
+    padding: 0.55rem 0.4rem;
+    border: 1.5px solid var(--border);
+    border-radius: var(--r-sm);
+    cursor: pointer;
+    font-size: 0.83rem; 
+    font-weight: 500; 
+    color: var(--muted);
+    transition: border-color 0.18s, background 0.18s, color 0.18s;
+  }
+  .topic-tile label:hover {
+    border-color: var(--ocean);
+    background: var(--white);
+  }
+  .topic-tile input:checked + label {
+    border-color: var(--ocean-mid); 
+    background: var(--ocean-pale); 
+    color: var(--ocean);
+    font-weight: 600;
+  }
+
+  textarea {
+    width: 100%;
+    padding: 0.65rem 0.95rem;
+    border: 1.5px solid var(--border);
+    border-radius: var(--r-sm);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.93rem;
+    background: var(--white);
+    color: var(--text);
+    outline: none;
+    min-height: 130px;
+    resize: vertical;
+    transition: border-color 0.18s, box-shadow 0.18s;
+    box-sizing: border-box;
+  }
+  textarea:focus {
+    border-color: var(--ocean-mid);
+    box-shadow: 0 0 0 3px rgba(26,122,143,0.12);
+  }
+  textarea::placeholder {
+    color: var(--muted);
+  }
+
+  .submit-row { 
+    display: flex; 
+    gap: 0.75rem; 
+    flex-wrap: wrap; 
+    align-items: center; 
+    margin-top: 1.5rem; 
+  }
+  .helper {
+    font-size: 0.78rem; 
+    color: var(--muted); 
+    margin-top: 1rem; 
+    line-height: 1.6;
+  }
+
+  @media(max-width:768px){
+    .team-grid { grid-template-columns: 1fr; }
+    .form-card { padding: 1.4rem; }
+    .topic-grid { grid-template-columns: 1fr; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="contact-wrap">
+
+  <div class="c-hero">
+    <span class="icon">📬</span>
+    <h1>Contact the Team</h1>
+    <p>Run into a bug, have a feature request, or need help with the app? Send a note and one of us will get back to you.</p>
+  </div>
+
+  <!-- Team cards -->
+  <div class="team-grid">
+    {% for c in contacts %}
+      <div class="team-card">
+        <div class="team-avatar">{{ c.name[0] }}</div>
+        <h3>{{ c.name }}</h3>
+        <p class="role">{{ c.role }}</p>
+        <a class="email" href="mailto:{{ c.email }}">{{ c.email }}</a>
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- Form -->
+  <div class="card form-card">
+    <h2>Send us a message</h2>
+    <p class="form-sub">
+      Fill out the form below and click "Send Email". Your default email
+      app will open with the message pre-addressed to all three of us.
+    </p>
+
+    <div class="recipients-strip">
+      📨 <strong>Recipients:</strong>
+      {% for c in contacts %}{{ c.email }}{% if not loop.last %}, {% endif %}{% endfor %}
+    </div>
+
+    <!-- No POST action — JS handles the mailto: handoff -->
+    <form id="contactForm" onsubmit="return openMailto(event)">
+
+      <div class="form-group">
+        <label for="senderName">Your Name</label>
+        <input type="text" id="senderName" required placeholder="e.g. Pat Aloha" />
+      </div>
+
+      <div class="form-group">
+        <label for="senderEmail">Your Email</label>
+        <input type="email" id="senderEmail" required placeholder="you@example.com" />
+      </div>
+
+      <div class="form-group">
+        <fieldset>
+          <legend>Topic</legend>
+          <div class="topic-grid">
+            {% for t in ['Bug Report','Feature Request','Account Help','General Feedback'] %}
+              <div class="topic-tile">
+                <input type="radio" name="topic" id="t{{ loop.index }}" value="{{ t }}"
+                       aria-label="{{ t }}"
+                       {% if loop.first %}checked{% endif %} />
+                <label for="t{{ loop.index }}">{{ t }}</label>
+              </div>
+            {% endfor %}
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="form-group">
+        <label for="subject">Subject</label>
+        <input type="text" id="subject" required
+               placeholder="Quick summary (e.g. 'Map view crashes on Maui search')" />
+      </div>
+
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" required
+                  placeholder="Describe what happened, what you expected, and any steps to reproduce…"></textarea>
+      </div>
+
+      <div class="submit-row">
+        <button type="submit" class="btn btn-coral btn-lg" aria-label="Send email message">📧 Send Email</button>
+        <button type="button" class="btn btn-ghost" onclick="goHome()" aria-label="Cancel and return home">Cancel</button>
+      </div>
+
+      <p class="helper">
+        <strong>ℹ️ How it works:</strong> Clicking "Send Email" opens your default email app with the message pre-filled and pre-addressed to the team. If nothing happens, your browser may not have a mail handler configured — you can also email us directly at the addresses above.
+      </p>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Recipient list rendered server-side so it stays in sync with TEAM_CONTACTS
+  var RECIPIENTS = "{% for c in contacts %}{{ c.email }}{% if not loop.last %}, {% endif %}{% endfor %}";
+
+  function goHome() {
+    window.location.href = "{{ url_for('home') }}";
+  }
+
+  function openMailto(e) {
+    try {
+      e.preventDefault();
+
+      if (!RECIPIENTS || RECIPIENTS.trim().length === 0) {
+        alert('Error: No team recipients configured. Please contact support.');
+        return false;
+      }
+
+      var name    = document.getElementById('senderName').value.trim();
+      var email   = document.getElementById('senderEmail').value.trim();
+      var topicEl = document.querySelector('input[name="topic"]:checked');
+      var topic   = topicEl ? topicEl.value : '';
+      var subject = document.getElementById('subject').value.trim();
+      var message = document.getElementById('message').value.trim();
+
+      // Validation: required fields
+      if (!name || name.length < 2) {
+        alert('Please enter a valid name (at least 2 characters).');
+        document.getElementById('senderName').focus();
+        return false;
+      }
+
+      if (!email) {
+        alert('Please enter your email address.');
+        document.getElementById('senderEmail').focus();
+        return false;
+      }
+
+      // Validation: email format
+      var emailRegex = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(email)) {
+        alert('Please enter a valid email address (e.g., user@example.com).');
+        document.getElementById('senderEmail').focus();
+        return false;
+      }
+
+      if (!topic) {
+        alert('Please select a topic.');
+        return false;
+      }
+
+      if (!subject || subject.length < 3) {
+        alert('Please enter a subject (at least 3 characters).');
+        document.getElementById('subject').focus();
+        return false;
+      }
+
+      if (!message || message.length < 10) {
+        alert('Please write a message (at least 10 characters).');
+        document.getElementById('message').focus();
+        return false;
+      }
+
+      var fullSubject = '[Hawaii Eats — ' + topic + '] ' + subject;
+      var body =
+        'Hi Hawaii Eats team,' + '\n\n' +
+        message + '\n\n' +
+        '─────────────────────' + '\n' +
+        'From: ' + name + ' <' + email + '>' + '\n' +
+        'Topic: ' + topic + '\n' +
+        'Sent from the Hawaii Eats Contact page.';
+
+      var mailto =
+        'mailto:' + encodeURIComponent(RECIPIENTS) +
+        '?subject=' + encodeURIComponent(fullSubject) +
+        '&body=' + encodeURIComponent(body);
+
+      window.location.href = mailto;
+      
+      // Reset form after brief delay to allow mailto to trigger
+      setTimeout(function() {
+        document.getElementById('contactForm').reset();
+      }, 100);
+      
+      return false;
+    } catch (err) {
+      console.error('Contact form error:', err);
+      alert('An error occurred while processing your message. Please try again or email us directly.');
+      return false;
+    }
+  }
+</script>
+{% endblock %}

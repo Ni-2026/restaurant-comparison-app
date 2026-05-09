@@ -2,29 +2,11 @@
 # ITM352 — Hawaii Restaurant Comparison App
 # Team: Nizhen He (Backend/Data), Grace Kulhanek (Frontend/AI), Sara Bautista (Viz/Testing)
 #
-# Flask entry point. Wires together:
-#   scraper.py       — SerpAPI live Yelp data
-#   pipeline.py      — cleaning + deduplication
-#   scoring.py       — composite ranking
-#   visualizations.py— bar chart + radar chart
-#   ai_recommender.py— Claude API pick
-#   auth.py          — user accounts + session history
-#   file_io.py       — CSV/JSON session persistence
-#
-# Routes:
-#   GET  /                 → home / search form
-#   POST /search           → run full pipeline → redirect to results
-#   GET  /results/<id>     → display results + charts + AI pick
-#   GET  /login            → login page
-#   POST /login            → process login
-#   GET  /register         → register page
-#   POST /register         → create account
-#   GET  /logout           → log out
-#   GET  /profile          → view/edit preferences
-#   POST /profile          → save preferences
-#   GET  /history          → past recommendations
-#   GET  /chart/<id>       → serve bar chart PNG
-#   GET  /radar/<id>       → serve radar chart HTML (for iframe)
+# UPDATED:
+#   - Replaced bar chart with Estimated Peak-Times chart (HTML iframe)
+#   - Added /for-you route (personalized picks from history)
+#   - Added /contact route (drafts an email to all 3 team members)
+#   - Tracks login event so the For You picks reshuffle on each login
 
 import os
 import sys
@@ -33,7 +15,7 @@ import uuid
 from datetime import datetime
 
 from flask import (Flask, render_template, request, redirect,
-                   url_for, flash, send_file, abort)
+                   url_for, flash, send_file, abort, session)
 from flask_login import (LoginManager, login_user as flask_login_user,
                          logout_user, login_required, current_user)
 
@@ -43,9 +25,11 @@ from scoring         import score_restaurants, to_recommendation_payload
 from visualizations  import generate_all_charts
 from ai_recommender  import get_recommendation
 from file_io         import save_to_csv, save_to_json
-from scraper         import scrape_yelp, scrape_hawaii_bulk, HAWAII_LOCATIONS
+from scraper         import (scrape_yelp, scrape_hawaii_bulk,
+                              HAWAII_LOCATIONS, estimate_peak_times)
 from auth            import (register_user, login_user_lookup,
                               get_user, update_profile, save_to_history)
+from recommendations import generate_for_you_picks, analyze_user_preferences
 
 # ── App setup ─────────────────────────────────────────────────────────────────
 app = Flask(__name__)
@@ -59,13 +43,21 @@ login_manager.login_message_category = "info"
 
 @login_manager.user_loader
 def load_user(user_id: str):
-    """Called by Flask-Login on every request to reload the user from the cookie."""
     return get_user(user_id)
 
-# ── In-memory result cache ────────────────────────────────────────────────────
-# Stores result payloads by short UUID so the results page can be fetched by ID.
-# Survives for the lifetime of the Flask process (sufficient for a class demo).
-_cache: dict = {}
+# ── In-memory caches (lifetime of the Flask process) ─────────────────────────
+_cache: dict = {}                 # { session_id: result_payload }
+_for_you_cache: dict = {}         # { (username, login_token): for_you_payload }
+
+# ── Team contact info ────────────────────────────────────────────────────────
+TEAM_CONTACTS = [
+    {"name": "Sara Bautista",   "email": "saraab@hawaii.edu",   "role": "Visualization & Testing"},
+    {"name": "Nizhen He",       "email": "nh42@hawaii.edu",     "role": "Backend & Data Pipeline"},
+    {"name": "Grace Kulhanek",  "email": "gracek87@hawaii.edu", "role": "Frontend & AI Integration"},
+]
+
+# Demo data path (used by For You and demo-mode search)
+DEMO_DATA_PATH = os.path.join(os.path.dirname(__file__), "yelp_results.json")
 
 # ── Available cuisine types and islands ──────────────────────────────────────
 CUISINES = [
@@ -111,7 +103,6 @@ def home():
         cuisines=CUISINES,
         islands=ISLANDS,
         restrictions=RESTRICTIONS,
-        # Pre-fill from user profile if logged in
         user_location  =current_user.location     if current_user.is_authenticated else "",
         user_budget    =current_user.budget        if current_user.is_authenticated else 2,
         user_restrictions=current_user.restrictions if current_user.is_authenticated else [],
@@ -124,36 +115,23 @@ def home():
 
 @app.route("/search", methods=["POST"])
 def search():
-    """
-    Runs the full pipeline on form submission:
-      1. Parse inputs
-      2. Scrape Yelp via SerpAPI (or fall back to yelp_results.json for demo)
-      3. build_dataframe() → clean + deduplicate
-      4. score_restaurants() → rank
-      5. generate charts
-      6. get_recommendation() → Claude AI pick
-      7. Cache results → redirect to /results/<id>
-    """
     cuisine  = request.form.get("cuisine",  "japanese")
     location = request.form.get("location", "Honolulu, HI")
     budget   = int(request.form.get("budget", 2))
     max_r    = int(request.form.get("max_results", 20))
-    mode     = request.form.get("mode", "live")     # "live" or "demo"
-    restrictions = request.form.getlist("restrictions")  # checkbox values
+    mode     = request.form.get("mode", "live")
+    restrictions = request.form.getlist("restrictions")
 
     # ── Fetch raw data ────────────────────────────────────────────
     if mode == "demo":
-        # Demo mode: load the pre-scraped sample data shipped in the repo
-        sample_path = os.path.join(os.path.dirname(__file__), "yelp_results.json")
         try:
-            with open(sample_path, "r", encoding="utf-8") as f:
+            with open(DEMO_DATA_PATH, "r", encoding="utf-8") as f:
                 raw = json.load(f)
             print(f"[App] Demo mode: loaded {len(raw)} records from yelp_results.json")
         except (FileNotFoundError, json.JSONDecodeError) as e:
             flash(f"Could not load demo data: {e}", "error")
             return redirect(url_for("home"))
     else:
-        # Live mode: call SerpAPI
         try:
             raw = scrape_yelp(location, cuisine, budget, max_results=max_r)
         except Exception as e:
@@ -173,29 +151,42 @@ def search():
     df_ranked = score_restaurants(df, user_budget=budget)
     stats     = summarize(df)
 
-    # ── Charts ────────────────────────────────────────────────────
-    session_id = str(uuid.uuid4())[:8]
-    charts = generate_all_charts(
-        df_ranked, session_id,
-        top_n=min(5, len(df_ranked)),
-        cuisine=cuisine,
-        location=location,
-    )
-
     # ── AI recommendation ─────────────────────────────────────────
     rec = get_recommendation(df_ranked, budget, location, cuisine)
 
     # ── Determine the single final pick ──────────────────────────
-    # Prefer AI's top_pick if it matches a real result; otherwise rank-1
     ai_name      = rec.get("top_pick", "")
     pick_matches = df_ranked[df_ranked["name"] == ai_name]
     final_row    = pick_matches.iloc[0] if not pick_matches.empty else df_ranked.iloc[0]
     final_pick   = final_row.to_dict()
 
-    # Handle mock rec: replace placeholder names with real ones
+    # Handle mock rec: replace placeholder names with real ones and add URLs
     if rec.get("_mock"):
         rec["top_pick"]  = final_pick["name"]
-        rec["runner_up"] = df_ranked.iloc[1]["name"] if len(df_ranked) > 1 else ""
+        if len(df_ranked) > 1:
+            runner_up_row = df_ranked.iloc[1]
+            rec["runner_up"] = runner_up_row.get("name", "")
+            rec["runner_up_url"] = runner_up_row.get("yelp_url", "")
+        else:
+            rec["runner_up"] = ""
+            rec["runner_up_url"] = ""
+
+    # ── Estimated peak-times for the final pick ───────────────────
+    peak_data = estimate_peak_times(
+        restaurant_name=final_pick["name"],
+        cuisine=cuisine,
+        price_tier=int(final_pick.get("price_num", 2) or 2),
+    )
+
+    # ── Charts ────────────────────────────────────────────────────
+    session_id = str(uuid.uuid4())[:8]
+    charts = generate_all_charts(
+        df_ranked, session_id,
+        top_pick_name=final_pick["name"],
+        peak_data=peak_data,
+        cuisine=cuisine,
+        location=location,
+    )
 
     # ── Save session files ────────────────────────────────────────
     save_to_csv(df_ranked, location, cuisine)
@@ -212,6 +203,8 @@ def search():
             "score":      round(float(final_pick.get("score", 0)), 3),
             "saved_at":   datetime.now().isoformat(),
         })
+        # Searching adds new history → invalidate cached For You picks
+        _invalidate_for_you_cache(current_user.username)
 
     # ── Cache payload ─────────────────────────────────────────────
     _cache[session_id] = {
@@ -224,6 +217,7 @@ def search():
         "top5":           df_ranked.head(5).to_dict(orient="records"),
         "all_results":    df_ranked.to_dict(orient="records"),
         "final_pick":     final_pick,
+        "peak_data":      peak_data,
         "recommendation": rec,
         "charts":         charts,
         "mode":           mode,
@@ -246,6 +240,15 @@ def results(session_id: str):
     return render_template("results.html", **payload)
 
 
+@app.route("/compare")
+def compare():
+    """
+    Displays a comparison of 5 user-selected restaurants.
+    Data is passed via sessionStorage from the client.
+    """
+    return render_template("compare.html")
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # AUTH
 # ─────────────────────────────────────────────────────────────────────────────
@@ -261,6 +264,9 @@ def login():
         user     = login_user_lookup(username, password)
         if user:
             flask_login_user(user, remember=request.form.get("remember") == "on")
+            # Mint a fresh login token so the For You picks reshuffle on each login.
+            session["login_token"] = str(uuid.uuid4())[:8]
+            _invalidate_for_you_cache(user.username)
             flash(f"Welcome back, {user.username}! 🌺", "success")
             return redirect(request.args.get("next") or url_for("home"))
         flash("Incorrect username or password.", "error")
@@ -294,7 +300,10 @@ def register():
 @app.route("/logout")
 @login_required
 def logout():
+    username = current_user.username
     logout_user()
+    _invalidate_for_you_cache(username)
+    session.pop("login_token", None)
     flash("You've been logged out.", "info")
     return redirect(url_for("home"))
 
@@ -312,6 +321,7 @@ def profile():
         raw_rest     = request.form.get("restrictions_hidden", "")
         restrictions = [r.strip() for r in raw_rest.split(",") if r.strip()]
         update_profile(current_user.username, location, budget, restrictions)
+        _invalidate_for_you_cache(current_user.username)
         flash("Preferences saved!", "success")
         return redirect(url_for("profile"))
 
@@ -333,21 +343,82 @@ def history():
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# FOR YOU — personalized AI recommendations
+# ─────────────────────────────────────────────────────────────────────────────
+
+@app.route("/for-you")
+@login_required
+def for_you():
+    """
+    Shows up to 5 personalized picks based on the user's search history.
+    Cached by (username, login_token) so:
+      - The page is fast within the same login session
+      - Picks reshuffle each time the user logs back in
+    """
+    token = session.get("login_token", "no-token")
+    cache_key = (current_user.username, token)
+
+    payload = _for_you_cache.get(cache_key)
+    if not payload:
+        payload = generate_for_you_picks(
+            current_user,
+            demo_path=DEMO_DATA_PATH,
+            max_picks=5,
+        )
+        _for_you_cache[cache_key] = payload
+
+    return render_template("for_you.html", **payload, user=current_user)
+
+
+@app.route("/for-you/refresh")
+@login_required
+def for_you_refresh():
+    """Forces regeneration of the For You picks (button on the page)."""
+    _invalidate_for_you_cache(current_user.username)
+    return redirect(url_for("for_you"))
+
+
+def _invalidate_for_you_cache(username: str):
+    """Drops every cached For You payload for this user."""
+    keys_to_drop = [k for k in _for_you_cache if k[0] == username]
+    for k in keys_to_drop:
+        _for_you_cache.pop(k, None)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# CONTACT — draft email to the team
+# ─────────────────────────────────────────────────────────────────────────────
+
+@app.route("/contact")
+def contact():
+    """
+    Renders the contact page. The form's Send button uses a JS-built
+    mailto: link so the user's default email client opens with all three
+    team members pre-addressed and the subject + body pre-filled.
+    """
+    return render_template("contact.html", contacts=TEAM_CONTACTS)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # CHART SERVING
 # ─────────────────────────────────────────────────────────────────────────────
 
 @app.route("/chart/<session_id>")
 def chart(session_id: str):
-    """Serves bar chart PNG inline for <img> tags in results.html."""
-    path = os.path.join(os.path.dirname(__file__), "charts", f"bar_{session_id}.png")
+    """
+    Serves the Estimated Peak Times chart (HTML, replaces the old bar chart).
+    Kept under the /chart/ URL for backward compatibility with bookmarks.
+    """
+    path = os.path.join(os.path.dirname(__file__), "charts", f"peak_{session_id}.html")
     if not os.path.exists(path):
-        abort(404)
-    return send_file(path, mimetype="image/png")
+        return ("<p style='text-align:center;padding:3rem;color:#999'>"
+                "Peak-times chart not available</p>"), 404
+    return send_file(path, mimetype="text/html")
 
 
 @app.route("/radar/<session_id>")
 def radar(session_id: str):
-    """Serves the self-contained Plotly HTML loaded into the results iframe."""
+    """Serves the self-contained Plotly radar HTML loaded into the iframe."""
     path = os.path.join(os.path.dirname(__file__), "charts", f"radar_{session_id}.html")
     if not os.path.exists(path):
         return ("<p style='text-align:center;padding:3rem;color:#999'>"
@@ -365,4 +436,3 @@ if __name__ == "__main__":
     print("  Open: http://127.0.0.1:5000")
     print("  Demo mode available — no SerpAPI key needed\n")
     app.run(debug=True, port=5000)
-    

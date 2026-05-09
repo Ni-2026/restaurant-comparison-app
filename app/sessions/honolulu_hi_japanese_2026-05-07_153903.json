@@ -1,0 +1,430 @@
+{
+  "session": {
+    "location": "Honolulu, HI",
+    "cuisine": "japanese",
+    "budget": 1,
+    "saved_at": "2026-05-07T15:39:03.935277"
+  },
+  "results": [
+    {
+      "name": "Musubi Cafe Iyasume",
+      "rating": 4.5,
+      "review_count": 5400,
+      "price": "$",
+      "address": "Pacific Monarch, Waikiki",
+      "phone": "N/A",
+      "yelp_url": "https://www.yelp.com/biz/musubi-cafe-iyasume-honolulu-24?osq=japanese",
+      "image_url": "https://s3-media0.fl.yelpcdn.com/bphoto/9TuPNWxmQZqybd4CKUXYEg/ls.jpg",
+      "image_gallery": [
+        "https://s3-media0.fl.yelpcdn.com/bphoto/9TuPNWxmQZqybd4CKUXYEg/ls.jpg"
+      ],
+      "website": "",
+      "categories": "Japanese, Hawaiian, Takeaway & Fast Food",
+      "price_num": 1,
+      "rating_norm": 0.5,
+      "review_norm": 0.844028567231785,
+      "price_fit": 1.0,
+      "score": 0.7032,
+      "rank": 1
+    },
+    {
+      "name": "Marugame Udon",
+      "rating": 4.5,
+      "review_count": 14100,
+      "price": "$$",
+      "address": "Kuhio Banyan Hotel, Waikiki",
+      "phone": "N/A",
+      "yelp_url": "https://www.yelp.com/biz/marugame-udon-honolulu-15?osq=japanese",
+      "image_url": "https://s3-media0.fl.yelpcdn.com/bphoto/nH_hVAXe3XMASR3k6zVSDw/ls.jpg",
+      "image_gallery": [
+        "https://s3-media0.fl.yelpcdn.com/bphoto/nH_hVAXe3XMASR3k6zVSDw/ls.jpg"
+      ],
+      "website": "",
+      "categories": "Japanese, Noodles, Soup",
+      "price_num": 2,
+      "rating_norm": 0.5,
+      "review_norm": 1.0,
+      "price_fit": 0.7,
+      "score": 0.69,
+      "rank": 2
+    },
+    {
+      "name": "Nori Bar - Waikiki",
+      "rating": 4.9,
+      "review_count": 29,
+      "price": "N/A",
+      "address": "Waikiki",
+      "phone": "N/A",
+      "yelp_url": "https://www.yelp.com/biz/nori-bar-waikiki-honolulu-2?osq=japanese",
+      "image_url": "https://s3-media0.fl.yelpcdn.com/bphoto/451UWf6_nvpETiZkS2mxrw/ls.jpg",
+      "image_gallery": [
+        "https://s3-media0.fl.yelpcdn.com/bphoto/451UWf6_nvpETiZkS2mxrw/ls.jpg"
+      ],
+      "website": "",
+      "categories": "Sushi, Japanese, Bars",
+      "price_num": 0,
+      "rating_norm": 1.0,
+      "review_norm": 0.0,
+      "price_fit": 0.5,
+      "score": 0.6,
+      "rank": 3
+    },
+    {
+      "name": "Tonkatsu Tamafuji",
+      "rating": 4.6,
+      "review_count": 2400,
+      "price": "$$$",
+      "address": "Hee Hing Plaza, Kaimuki",
+      "phone": "N/A",
+      "yelp_url": "https://www.yelp.com/biz/tonkatsu-tamafuji-honolulu-9?osq=japanese",
+      "image_url": "https://s3-media0.fl.yelpcdn.com/bphoto/QJ_eDQjXiJol0Je9KTOnKQ/ls.jpg",
+      "image_gallery": [
+        "https://s3-media0.fl.yelpcdn.com/bphoto/QJ_eDQjXiJol0Je9KTOnKQ/ls.jpg"
+      ],
+      "website": "",
+      "categories": "Japanese",
+      "price_num": 3,
+      "rating_norm": 0.6249999999999994,
+      "review_norm": 0.7122676895558069,
+      "price_fit": 0.3,
+      "score": 0.5862,
+      "rank": 4
+    },
+    {
+      "name": "Izakaya Tenkichi",
+      "rating": 4.6,
+      "review_count": 241,
+      "price": "$$",
+      "address": "Mo'ili'ili",
+      "phone": "N/A",
+      "yelp_url": "https://www.yelp.com/biz/izakaya-tenkichi-honolulu?osq=japanese",
+      "image_url": "https://s3-media0.fl.yelpcdn.com/bphoto/cpCoYDxg5B_N81_53HC30g/ls.jpg",
+      "image_gallery": [
+        "https://s3-media0.fl.yelpcdn.com/bphoto/cpCoYDxg5B_N81_53HC30g/ls.jpg"
+      ],
+      "website": "",
+      "categories": "Japanese, Noodles, Seafood",
+      "price_num": 2,
+      "rating_norm": 0.6249999999999994,
+      "review_norm": 0.33931529029867163,
+      "price_fit": 0.7,
+      "score": 0.5543,
+      "rank": 5
+    },
+    {
+      "name": "Izakaya Mitch's",
+      "rating": 4.8,
+      "review_count": 39,
+      "price": "N/A",
+      "address": "Honolulu",
+      "phone": "N/A",
+      "yelp_url": "https://www.yelp.com/biz/izakaya-mitchs-honolulu?osq=japanese",
+      "image_url": "https://s3-media0.fl.yelpcdn.com/bphoto/Xy11Z6okgLCECKho9jaVcg/ls.jpg",
+      "image_gallery": [
+        "https://s3-media0.fl.yelpcdn.com/bphoto/Xy11Z6okgLCECKho9jaVcg/ls.jpg"
+      ],
+      "website": "",
+      "categories": "Izakaya",
+      "price_num": 0,
+      "rating_norm": 0.8749999999999994,
+      "review_norm": 0.04675625787714195,
+      "price_fit": 0.5,
+      "score": 0.5515,
+      "rank": 6
+    },
+    {
+      "name": "Totoya",
+      "rating": 4.6,
+      "review_count": 302,
+      "price": "N/A",
+      "address": "Kaimuki",
+      "phone": "N/A",
+      "yelp_url": "https://www.yelp.com/biz/totoya-honolulu-2?osq=japanese",
+      "image_url": "https://s3-media0.fl.yelpcdn.com/bphoto/5PY5QADfdp817nw7tbHakQ/ls.jpg",
+      "image_gallery": [
+        "https://s3-media0.fl.yelpcdn.com/bphoto/5PY5QADfdp817nw7tbHakQ/ls.jpg"
+      ],
+      "website": "",
+      "categories": "Sushi, Japanese, Seafood",
+      "price_num": 0,
+      "rating_norm": 0.6249999999999994,
+      "review_norm": 0.3758506802524141,
+      "price_fit": 0.5,
+      "score": 0.5253,
+      "rank": 7
+    },
+    {
+      "name": "ABURIYA IBUSHI",
+      "rating": 4.5,
+      "review_count": 434,
+      "price": "$$",
+      "address": "Kaimuki",
+      "phone": "N/A",
+      "yelp_url": "https://www.yelp.com/biz/aburiya-ibushi-honolulu?osq=japanese",
+      "image_url": "https://s3-media0.fl.yelpcdn.com/bphoto/BuZCIUtfxcIDMcEF2e2BhQ/ls.jpg",
+      "image_gallery": [
+        "https://s3-media0.fl.yelpcdn.com/bphoto/BuZCIUtfxcIDMcEF2e2BhQ/ls.jpg"
+      ],
+      "website": "",
+      "categories": "Japanese",
+      "price_num": 2,
+      "rating_norm": 0.5,
+      "review_norm": 0.4346227861499949,
+      "price_fit": 0.7,
+      "score": 0.5204,
+      "rank": 8
+    },
+    {
+      "name": "I-NABA",
+      "rating": 4.4,
+      "review_count": 797,
+      "price": "$$",
+      "address": "Honolulu",
+      "phone": "N/A",
+      "yelp_url": "https://www.yelp.com/biz/i-naba-honolulu?osq=japanese",
+      "image_url": "https://s3-media0.fl.yelpcdn.com/bphoto/2T9JlvSRQaGdSjKVOtQcWw/ls.jpg",
+      "image_gallery": [
+        "https://s3-media0.fl.yelpcdn.com/bphoto/2T9JlvSRQaGdSjKVOtQcWw/ls.jpg"
+      ],
+      "website": "",
+      "categories": "Japanese, Noodles, Sushi",
+      "price_num": 2,
+      "rating_norm": 0.37500000000000056,
+      "review_norm": 0.533238409922423,
+      "price_fit": 0.7,
+      "score": 0.4875,
+      "rank": 9
+    },
+    {
+      "name": "Akira Japanese Restaurant",
+      "rating": 4.5,
+      "review_count": 338,
+      "price": "N/A",
+      "address": "eleven50 Building",
+      "phone": "N/A",
+      "yelp_url": "https://www.yelp.com/biz/akira-japanese-restaurant-honolulu-2?osq=japanese",
+      "image_url": "https://s3-media0.fl.yelpcdn.com/bphoto/i09x8xhyo87joLJmMPqbcg/ls.jpg",
+      "image_gallery": [
+        "https://s3-media0.fl.yelpcdn.com/bphoto/i09x8xhyo87joLJmMPqbcg/ls.jpg"
+      ],
+      "website": "",
+      "categories": "Japanese",
+      "price_num": 0,
+      "rating_norm": 0.5,
+      "review_norm": 0.39409720799993314,
+      "price_fit": 0.5,
+      "score": 0.4682,
+      "rank": 10
+    },
+    {
+      "name": "Little Plum",
+      "rating": 4.5,
+      "review_count": 273,
+      "price": "N/A",
+      "address": "Manoa",
+      "phone": "N/A",
+      "yelp_url": "https://www.yelp.com/biz/little-plum-honolulu?osq=japanese",
+      "image_url": "https://s3-media0.fl.yelpcdn.com/bphoto/PC95qFSR9xz9bb6vZJDh4g/ls.jpg",
+      "image_gallery": [
+        "https://s3-media0.fl.yelpcdn.com/bphoto/PC95qFSR9xz9bb6vZJDh4g/ls.jpg"
+      ],
+      "website": "",
+      "categories": "Asian Fusion, Japanese",
+      "price_num": 0,
+      "rating_norm": 0.5,
+      "review_norm": 0.359499646572496,
+      "price_fit": 0.5,
+      "score": 0.4578,
+      "rank": 11
+    },
+    {
+      "name": "Ginza Bairin Tonkatsu & Yoshoku Bistro",
+      "rating": 4.3,
+      "review_count": 4200,
+      "price": "$$$",
+      "address": "Outrigger Regency on Beachwalk, Waikiki",
+      "phone": "N/A",
+      "yelp_url": "https://www.yelp.com/biz/ginza-bairin-tonkatsu-and-yoshoku-bistro-honolulu-5?osq=japanese",
+      "image_url": "https://s3-media0.fl.yelpcdn.com/bphoto/8IDf7Ggp2GXmMHV97cE6Tw/ls.jpg",
+      "image_gallery": [
+        "https://s3-media0.fl.yelpcdn.com/bphoto/8IDf7Ggp2GXmMHV97cE6Tw/ls.jpg"
+      ],
+      "website": "",
+      "categories": "Japanese, Diners, Bars",
+      "price_num": 3,
+      "rating_norm": 0.25,
+      "review_norm": 0.8031916504082669,
+      "price_fit": 0.3,
+      "score": 0.426,
+      "rank": 12
+    },
+    {
+      "name": "Zigu",
+      "rating": 4.4,
+      "review_count": 875,
+      "price": "$$$",
+      "address": "Waikiki",
+      "phone": "N/A",
+      "yelp_url": "https://www.yelp.com/biz/zigu-honolulu-2?osq=japanese",
+      "image_url": "https://s3-media0.fl.yelpcdn.com/bphoto/WTit0kibIbaxFywT7gxOwg/ls.jpg",
+      "image_gallery": [
+        "https://s3-media0.fl.yelpcdn.com/bphoto/WTit0kibIbaxFywT7gxOwg/ls.jpg"
+      ],
+      "website": "",
+      "categories": "Seafood, Izakaya, Sushi",
+      "price_num": 3,
+      "rating_norm": 0.37500000000000056,
+      "review_norm": 0.5483953203870658,
+      "price_fit": 0.3,
+      "score": 0.412,
+      "rank": 13
+    },
+    {
+      "name": "Minatoku Kitchen",
+      "rating": 4.4,
+      "review_count": 88,
+      "price": "$$",
+      "address": "Mo'ili'ili",
+      "phone": "N/A",
+      "yelp_url": "https://www.yelp.com/biz/minatoku-kitchen-honolulu-3?osq=japanese",
+      "image_url": "https://s3-media0.fl.yelpcdn.com/bphoto/K7q8XSW25cvCED9or6tdTA/ls.jpg",
+      "image_gallery": [
+        "https://s3-media0.fl.yelpcdn.com/bphoto/K7q8XSW25cvCED9or6tdTA/ls.jpg"
+      ],
+      "website": "",
+      "categories": "Japanese",
+      "price_num": 2,
+      "rating_norm": 0.37500000000000056,
+      "review_norm": 0.17673877735422905,
+      "price_fit": 0.7,
+      "score": 0.3805,
+      "rank": 14
+    },
+    {
+      "name": "Teishoku",
+      "rating": 4.2,
+      "review_count": 696,
+      "price": "$$",
+      "address": "Kamehameha Shopping Center, Kalihi",
+      "phone": "N/A",
+      "yelp_url": "https://www.yelp.com/biz/teishoku-honolulu?osq=japanese",
+      "image_url": "https://s3-media0.fl.yelpcdn.com/bphoto/Td0y853m1hgXwt7UlhlxIA/ls.jpg",
+      "image_gallery": [
+        "https://s3-media0.fl.yelpcdn.com/bphoto/Td0y853m1hgXwt7UlhlxIA/ls.jpg"
+      ],
+      "website": "",
+      "categories": "Japanese",
+      "price_num": 2,
+      "rating_norm": 0.12500000000000056,
+      "review_norm": 0.5112446660659602,
+      "price_fit": 0.7,
+      "score": 0.3559,
+      "rank": 15
+    },
+    {
+      "name": "Izakaya Harumi",
+      "rating": 4.3,
+      "review_count": 388,
+      "price": "N/A",
+      "address": "Waikiki",
+      "phone": "N/A",
+      "yelp_url": "https://www.yelp.com/biz/izakaya-harumi-honolulu?osq=japanese",
+      "image_url": "https://s3-media0.fl.yelpcdn.com/bphoto/PlnkcEqdns0e_XLAk5I5Zw/ls.jpg",
+      "image_gallery": [
+        "https://s3-media0.fl.yelpcdn.com/bphoto/PlnkcEqdns0e_XLAk5I5Zw/ls.jpg"
+      ],
+      "website": "",
+      "categories": "Hawaiian, Sushi, Izakaya",
+      "price_num": 0,
+      "rating_norm": 0.25,
+      "review_norm": 0.4164576220266437,
+      "price_fit": 0.5,
+      "score": 0.3499,
+      "rank": 16
+    },
+    {
+      "name": "Yoshitsune Restaurant",
+      "rating": 4.3,
+      "review_count": 801,
+      "price": "$$$",
+      "address": "Park Shore Waikiki, Waikiki",
+      "phone": "N/A",
+      "yelp_url": "https://www.yelp.com/biz/yoshitsune-honolulu?osq=japanese",
+      "image_url": "https://s3-media0.fl.yelpcdn.com/bphoto/2EpNBJLFy5JfxXrEyZYuOw/ls.jpg",
+      "image_gallery": [
+        "https://s3-media0.fl.yelpcdn.com/bphoto/2EpNBJLFy5JfxXrEyZYuOw/ls.jpg"
+      ],
+      "website": "",
+      "categories": "Japanese, Sushi",
+      "price_num": 3,
+      "rating_norm": 0.25,
+      "review_norm": 0.5340510492865637,
+      "price_fit": 0.3,
+      "score": 0.3452,
+      "rank": 17
+    },
+    {
+      "name": "Kaimuki Shokudo",
+      "rating": 4.2,
+      "review_count": 439,
+      "price": "$$",
+      "address": "Kaimuki",
+      "phone": "N/A",
+      "yelp_url": "https://www.yelp.com/biz/kaimuki-shokudo-honolulu-2?osq=japanese",
+      "image_url": "https://s3-media0.fl.yelpcdn.com/bphoto/09eeGXwUJ7VHc2dQS1zFNw/ls.jpg",
+      "image_gallery": [
+        "https://s3-media0.fl.yelpcdn.com/bphoto/09eeGXwUJ7VHc2dQS1zFNw/ls.jpg"
+      ],
+      "website": "",
+      "categories": "Japanese",
+      "price_num": 2,
+      "rating_norm": 0.12500000000000056,
+      "review_norm": 0.4364802639016482,
+      "price_fit": 0.7,
+      "score": 0.3334,
+      "rank": 18
+    },
+    {
+      "name": "Rinka",
+      "rating": 4.1,
+      "review_count": 636,
+      "price": "$$",
+      "address": "Ae'o Tower, Kaka'ako",
+      "phone": "N/A",
+      "yelp_url": "https://www.yelp.com/biz/rinka-honolulu-5?osq=japanese",
+      "image_url": "https://s3-media0.fl.yelpcdn.com/bphoto/0ymR7Tg069mk8hxITpLk9A/ls.jpg",
+      "image_gallery": [
+        "https://s3-media0.fl.yelpcdn.com/bphoto/0ymR7Tg069mk8hxITpLk9A/ls.jpg"
+      ],
+      "website": "",
+      "categories": "Japanese, Sushi, Hot Pot",
+      "price_num": 2,
+      "rating_norm": 0.0,
+      "review_norm": 0.4966146273335392,
+      "price_fit": 0.7,
+      "score": 0.289,
+      "rank": 19
+    },
+    {
+      "name": "Marujuu",
+      "rating": 4.2,
+      "review_count": 98,
+      "price": "$$",
+      "address": "Kaimuki",
+      "phone": "N/A",
+      "yelp_url": "https://www.yelp.com/biz/marujuu-honolulu?osq=japanese",
+      "image_url": "https://s3-media0.fl.yelpcdn.com/bphoto/NroBgpQiUJN1YpWEdRgiCw/ls.jpg",
+      "image_gallery": [
+        "https://s3-media0.fl.yelpcdn.com/bphoto/NroBgpQiUJN1YpWEdRgiCw/ls.jpg"
+      ],
+      "website": "",
+      "categories": "Japanese",
+      "price_num": 2,
+      "rating_norm": 0.12500000000000056,
+      "review_norm": 0.1940452748600375,
+      "price_fit": 0.7,
+      "score": 0.2607,
+      "rank": 20
+    }
+  ]
+}

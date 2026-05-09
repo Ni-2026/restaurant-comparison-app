@@ -7,18 +7,36 @@
     background: linear-gradient(135deg, var(--ocean) 0%, #0f7e95 100%);
     border-radius: var(--r);
     color: var(--white);
-    padding: 2.25rem 2.5rem;
     margin-bottom: 1.5rem;
-    position: relative;
     overflow: hidden;
+    box-shadow: var(--shadow);
   }
-  .final-hero::after {
-    content: '🌺';
-    position: absolute;
-    right: 1.75rem; top: 1.25rem;
-    font-size: 5.5rem;
-    opacity: 0.1;
-    pointer-events: none;
+  /* Banner image at top of hero */
+  .hero-image-wrap {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    background: #0a4a57; /* fallback */
+  }
+  .hero-image-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .hero-image-wrap::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(11,94,110,0.05) 0%, rgba(11,94,110,0.55) 100%);
+  }
+  .hero-image-wrap .img-fallback {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 4rem; opacity: 0.35;
+  }
+  .final-hero-body {
+    padding: 1.75rem 2.5rem 2.25rem;
+    position: relative;
   }
   .final-hero .eyebrow {
     font-size: 0.72rem; font-weight: 600;
@@ -28,9 +46,11 @@
   .final-hero h1 { font-size: 2.2rem; color: var(--white); line-height: 1.15; margin-bottom: 0.6rem; }
   .final-hero .meta {
     display: flex; flex-wrap: wrap; gap: 0.9rem;
-    font-size: 0.89rem; opacity: 0.88; margin-bottom: 1rem;
+    font-size: 0.89rem; opacity: 0.92; margin-bottom: 0.85rem;
   }
-  .final-hero .meta span { display: flex; align-items: center; gap: 0.3rem; }
+  .final-hero .meta span { display: inline-flex; align-items: center; gap: 0.3rem; }
+  .final-hero .meta a { color: var(--white); text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); }
+  .final-hero .meta a:hover { text-decoration-color: var(--white); }
   .reason-box {
     background: rgba(255,255,255,0.13);
     border-radius: 8px;
@@ -40,15 +60,23 @@
     margin-bottom: 0.75rem;
   }
   .tip-line { font-size: 0.88rem; opacity: 0.82; font-style: italic; }
-  .yelp-link {
-    display: inline-flex; align-items: center; gap: 0.35rem;
+  .hero-actions {
+    display: flex; flex-wrap: wrap; gap: 0.6rem;
     margin-top: 1.1rem;
+  }
+  .hero-link {
+    display: inline-flex; align-items: center; gap: 0.35rem;
     background: var(--white); color: var(--ocean);
-    padding: 0.55rem 1.3rem; border-radius: 6px;
-    font-weight: 700; font-size: 0.88rem;
+    padding: 0.55rem 1.2rem; border-radius: 6px;
+    font-weight: 700; font-size: 0.86rem;
     transition: background 0.18s, transform 0.12s;
   }
-  .yelp-link:hover { background: var(--ocean-pale); transform: translateY(-1px); text-decoration: none; }
+  .hero-link:hover { background: var(--ocean-pale); transform: translateY(-1px); text-decoration: none; }
+  .hero-link.secondary {
+    background: transparent; color: var(--white);
+    border: 1.5px solid rgba(255,255,255,0.55);
+  }
+  .hero-link.secondary:hover { background: rgba(255,255,255,0.12); }
 
   /* ── Runner-up banner ──────────────────────────────────────── */
   .runner-up-bar {
@@ -61,6 +89,71 @@
     box-shadow: var(--shadow-sm);
   }
   .runner-up-bar strong { color: var(--ocean); }
+  .runner-up-bar a { color: var(--ocean); text-decoration: underline; }
+  .runner-up-bar a:hover { color: #0a6a7e; }
+
+  /* ── Photo Gallery ─────────────────────────────────────────── */
+  .gallery-section { margin: 2rem 0; }
+  .gallery-title { font-size: 0.95rem; font-weight: 600; color: var(--muted); margin-bottom: 0.75rem; }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+  .gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    aspect-ratio: 1;
+    background: var(--sand-mid);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .gallery-item:hover { transform: scale(1.05); box-shadow: var(--shadow); }
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .gallery-item-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    opacity: 0.4;
+  }
+
+  /* ── Modal for gallery preview ─────────────────────────────── */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1000; }
+  .modal-overlay.active { display: flex; align-items: center; justify-content: center; }
+  .modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 700px;
+    background: var(--white);
+    border-radius: var(--r);
+    overflow: hidden;
+  }
+  .modal-img { width: 100%; height: auto; display: block; }
+  .modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(255,255,255,0.9);
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
   /* ── Search pills ──────────────────────────────────────────── */
   .pill-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.5rem; }
@@ -83,6 +176,50 @@
     color: var(--muted); padding: 0.55rem 0.7rem; border-bottom: 2px solid var(--border);
     text-align: left;
   }
+  .checkbox-col { text-align: center; width: 45px; }
+  .checkbox-col input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; }
+  .rtable tr.selected td { background: rgba(11,94,110,0.08); }
+
+  /* ── Selection controls ────────────────────────────────────── */
+  .selection-bar {
+    background: var(--white);
+    border: 2px solid var(--ocean);
+    border-radius: var(--r-sm);
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .selection-info { font-size: 0.95rem; font-weight: 600; color: var(--ocean); }
+  .selection-info .count { font-size: 1.2rem; font-weight: 700; }
+  .compare-btn {
+    background: var(--ocean);
+    color: var(--white);
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, opacity 0.2s;
+    font-size: 0.95rem;
+  }
+  .compare-btn:hover:not(:disabled) { background: #0a6a7e; }
+  .compare-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .select-all-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--muted);
+    user-select: none;
+  }
+  .select-all-label input { cursor: pointer; }
   .rtable td { padding: 0.8rem 0.7rem; border-bottom: 1px solid var(--sand-mid); vertical-align: middle; }
   .rtable tr:last-child td { border-bottom: none; }
   .rtable tr.top td { background: rgba(11,94,110,0.04); }
@@ -95,23 +232,43 @@
   .rk2 { background: #e0e0e0; color: #333; }
   .rk3 { background: #cd7f32; color: #fff; }
   .rkn { background: var(--sand-mid); color: var(--muted); }
-  .name-cell a { font-weight: 600; color: var(--ocean); }
-  .name-cell a:hover { text-decoration: underline; }
-  .addr { font-size: 0.78rem; color: var(--muted); margin-top: 0.1rem; }
+  .name-cell { display: flex; align-items: center; gap: 0.7rem; }
+  .name-thumb {
+    width: 48px; height: 48px; border-radius: 6px;
+    object-fit: cover; flex-shrink: 0;
+    background: var(--sand-mid);
+  }
+  .name-thumb-fallback {
+    width: 48px; height: 48px; border-radius: 6px;
+    background: var(--ocean-pale); color: var(--ocean);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; flex-shrink: 0;
+  }
+  .name-info { min-width: 0; }
+  .name-info a { font-weight: 600; color: var(--ocean); }
+  .name-info a:hover { text-decoration: underline; }
+  .row-meta {
+    font-size: 0.76rem; color: var(--muted); margin-top: 0.18rem;
+    display: flex; flex-wrap: wrap; gap: 0.55rem;
+  }
+  .row-meta a { color: var(--muted); }
+  .row-meta a:hover { color: var(--ocean); }
   .rating-val { color: #c47d00; font-weight: 700; }
 
   /* Score bar */
   .sbar { display: flex; align-items: center; gap: 0.45rem; min-width: 90px; }
   .sbar-bg { flex: 1; background: var(--sand-mid); border-radius: 4px; height: 7px; overflow: hidden; }
-  .sbar-fill { height: 100%; border-radius: 4px; background: var(--ocean-mid); }
+  .sbar-fill { height: 100%; border-radius: 4px; background: var(--ocean-mid); width: var(--score-width); }
   .sbar-num { font-size: 0.82rem; font-weight: 700; color: var(--ocean); min-width: 38px; }
 
   /* ── Charts ────────────────────────────────────────────────── */
   .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 0.5rem; }
   .chart-box { background: var(--white); border-radius: var(--r); box-shadow: var(--shadow); padding: 1.25rem; }
-  .chart-box h3 { font-size: 1rem; font-family: 'Inter',sans-serif; font-weight: 600; margin-bottom: 0.75rem; }
-  .chart-box img { width: 100%; border-radius: 6px; }
-  .radar-frame { width: 100%; height: 460px; border: none; border-radius: 6px; background: var(--white); }
+  .chart-box h3 { font-size: 1rem; font-family: 'Inter',sans-serif; font-weight: 600; margin-bottom: 0.4rem; }
+  .chart-sub { font-size: 0.78rem; color: var(--muted); margin-bottom: 0.75rem; }
+  .chart-frame {
+    width: 100%; height: 460px; border: none; border-radius: 6px; background: var(--white);
+  }
 
   /* ── Avoid note ────────────────────────────────────────────── */
   .avoid-note {
@@ -132,10 +289,15 @@
   .mode-live { background: #e8f5e9; color: #2e7d32; }
   .mode-demo { background: #fff3e0; color: #e65100; }
 
-  @media(max-width:620px){
+  @media (max-width: 620px) {
     .charts-grid { grid-template-columns: 1fr; }
     .final-hero h1 { font-size: 1.7rem; }
-    .rtable th:nth-child(4), .rtable td:nth-child(4) { display: none; }
+    .final-hero-body { padding: 1.5rem 1.5rem 1.75rem; }
+    .hero-image-wrap { height: 170px; }
+    .rtable th:nth-child(4),
+    .rtable td:nth-child(4) { display: none; }
+    .name-thumb,
+    .name-thumb-fallback { width: 40px; height: 40px; }
   }
 </style>
 {% endblock %}
@@ -157,58 +319,115 @@
 
 <!-- ── FINAL PICK ─────────────────────────────────────────────────── -->
 <div class="final-hero">
-  <p class="eyebrow">🤖 AI Recommendation — Tonight you should go to</p>
-  <h1>{{ final_pick.name }}</h1>
 
-  <div class="meta">
-    <span>⭐ {{ "%.1f"|format(final_pick.rating) }}</span>
-    <span>💬 {{ "{:,}".format(final_pick.review_count|int) }} reviews</span>
-    <span>💵 {{ final_pick.price }}</span>
-    {% if final_pick.address and final_pick.address != 'N/A' %}
-      <span>📍 {{ final_pick.address }}</span>
-    {% endif %}
-    {% if final_pick.phone and final_pick.phone != 'N/A' %}
-      <span>📞 {{ final_pick.phone }}</span>
+  <!-- Banner image -->
+  <div class="hero-image-wrap">
+    {% if final_pick.image_url %}
+      <img src="{{ final_pick.image_url }}" alt="{{ final_pick.name }}"
+           onerror="this.parentElement.innerHTML='<div class=&quot;img-fallback&quot;>🍽️</div>'" />
+    {% else %}
+      <div class="img-fallback">🍽️</div>
     {% endif %}
   </div>
 
-  {% if recommendation and not recommendation.get('error') %}
-    <div class="reason-box">{{ recommendation.reason }}</div>
-    {% if recommendation.tip %}
-      <p class="tip-line">💡 {{ recommendation.tip }}</p>
-    {% endif %}
-  {% elif recommendation and recommendation.get('_mock') %}
-    <div class="reason-box">{{ recommendation.reason }}</div>
-    <p class="tip-line">💡 {{ recommendation.tip }}</p>
-    <p class="tip-line mt-1" style="opacity:0.6">(Set ANTHROPIC_API_KEY for personalized AI recommendations)</p>
-  {% endif %}
+  <div class="final-hero-body">
+    <p class="eyebrow">🤖 AI Recommendation — Tonight you should go to</p>
+    <h1>{{ final_pick.name }}</h1>
 
-  {% if final_pick.yelp_url %}
-    <a class="yelp-link" href="{{ final_pick.yelp_url }}" target="_blank" rel="noopener">
-      View on Yelp →
-    </a>
-  {% endif %}
+    <div class="meta">
+      <span>⭐ {{ "%.1f"|format(final_pick.rating) }}</span>
+      <span>💬 {{ "{:,}".format(final_pick.review_count|int) }} reviews</span>
+      <span>💵 {{ final_pick.price }}</span>
+      {% if final_pick.address and final_pick.address != 'N/A' %}
+        <span>📍 {{ final_pick.address }}</span>
+      {% endif %}
+      {% if final_pick.phone and final_pick.phone != 'N/A' %}
+        <span>📞 <a href="tel:{{ final_pick.phone | replace(' ','') | replace('-','') | replace('(','') | replace(')','') }}">{{ final_pick.phone }}</a></span>
+      {% endif %}
+    </div>
+
+    {% if recommendation and not recommendation.get('error') %}
+      <div class="reason-box">{{ recommendation.reason }}</div>
+      {% if recommendation.tip %}
+        <p class="tip-line">💡 {{ recommendation.tip }}</p>
+      {% endif %}
+    {% elif recommendation and recommendation.get('_mock') %}
+      <div class="reason-box">{{ recommendation.reason }}</div>
+      <p class="tip-line">💡 {{ recommendation.tip }}</p>
+      <p class="tip-line mt-1" style="opacity: 0.6">(Set ANTHROPIC_API_KEY for personalized AI recommendations)</p>
+    {% endif %}
+
+    <div class="hero-actions">
+      {% if final_pick.yelp_url %}
+        <a class="hero-link" href="{{ final_pick.yelp_url }}" target="_blank" rel="noopener">
+          View on Yelp →
+        </a>
+      {% endif %}
+      {% if final_pick.website %}
+        <a class="hero-link secondary" href="{{ final_pick.website }}" target="_blank" rel="noopener">
+          🌐 Restaurant Website
+        </a>
+      {% endif %}
+    </div>
+  </div>
 </div>
 
 <!-- Runner-up -->
 {% if recommendation and recommendation.get('runner_up') %}
   <div class="runner-up-bar">
-    <strong>🥈 Runner-up: {{ recommendation.runner_up }}</strong> —
+    <strong>🥈 Runner-up: 
+      {% if recommendation.get('runner_up_url') %}
+        <a href="{{ recommendation.runner_up_url }}" target="_blank" rel="noopener">{{ recommendation.runner_up }}</a>
+      {% else %}
+        {{ recommendation.runner_up }}
+      {% endif %}
+    </strong> —
     {{ recommendation.runner_up_reason }}
   </div>
 {% endif %}
 
-<!-- ── RANKINGS TABLE ─────────────────────────────────────────────── -->
-<div class="sec-head mt-4">
-  <h2>Full Rankings</h2>
-  <span>Rating 50% · Reviews 30% · Price Fit 20%</span>
+<!-- ── PHOTO GALLERY ─────────────────────────────────────────────── -->
+{% if final_pick.image_gallery and final_pick.image_gallery|length > 0 %}
+<div class="gallery-section">
+  <p class="gallery-title">📸 Photos</p>
+  <div class="gallery-grid">
+    {% for img_url in final_pick.image_gallery[:12] %}
+      {% if img_url %}
+        <div class="gallery-item" onclick="openGalleryModal('{{ img_url }}')">
+          <img src="{{ img_url }}" alt="Restaurant photo" onerror="this.outerHTML='<div class=&quot;gallery-item-fallback&quot;>📷</div>'" />
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+<!-- ── SELECTION BAR ──────────────────────────────────────────────── -->
+<div class="selection-bar">
+  <div class="selection-info">
+    Selected: <span class="count" id="selectionCount">0</span> / 5
+  </div>
+  <label class="select-all-label">
+    <input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll(this)" />
+    Select All
+  </label>
+  <button class="compare-btn" id="compareBtn" onclick="compareSelected()" disabled>
+    🔍 Compare Selected
+  </button>
 </div>
 
-<div class="card" style="padding:0; overflow:hidden;">
+<!-- ── ALL RESULTS TABLE ─────────────────────────────────────────────── -->
+<div class="sec-head mt-4">
+  <h2>All Results</h2>
+  <span>Rating 50% · Reviews 30% · Price Fit 20% — Select up to 5 to compare</span>
+</div>
+
+<div class="card" style="padding: 0; overflow: hidden;">
   <table class="rtable">
     <thead>
       <tr>
-        <th style="width:42px">#</th>
+        <th class="checkbox-col"><input type="checkbox" id="headerCheckbox" onchange="toggleSelectAll(this)" /></th>
+        <th style="width: 42px">#</th>
         <th>Restaurant</th>
         <th>Rating</th>
         <th>Price</th>
@@ -216,8 +435,11 @@
       </tr>
     </thead>
     <tbody>
-      {% for r in top5 %}
-        <tr class="{% if loop.index == 1 %}top{% endif %}">
+      {% for r in all_results %}
+        <tr class="result-row" data-restaurant-name="{{ r.name }}">
+          <td class="checkbox-col">
+            <input type="checkbox" class="restaurant-checkbox" data-name="{{ r.name }}" data-index="{{ loop.index0 }}" onchange="updateSelection()" />
+          </td>
           <td>
             <span class="rank-badge
               {% if loop.index==1 %}rk1{% elif loop.index==2 %}rk2{% elif loop.index==3 %}rk3{% else %}rkn{% endif %}">
@@ -226,17 +448,33 @@
           </td>
           <td>
             <div class="name-cell">
-              {% if r.yelp_url %}
-                <a href="{{ r.yelp_url }}" target="_blank" rel="noopener">{{ r.name }}</a>
-              {% else %}{{ r.name }}{% endif %}
+              {% if r.image_url %}
+                <img class="name-thumb" src="{{ r.image_url }}" alt="{{ r.name }}"
+                     onerror="this.outerHTML='<div class=&quot;name-thumb-fallback&quot;>🍽️</div>'" />
+              {% else %}
+                <div class="name-thumb-fallback">🍽️</div>
+              {% endif %}
+              <div class="name-info">
+                {% if r.yelp_url %}
+                  <a href="{{ r.yelp_url }}" target="_blank" rel="noopener">{{ r.name }}</a>
+                {% else %}{{ r.name }}{% endif %}
+                <div class="row-meta">
+                  {% if r.address and r.address != 'N/A' %}
+                    <span>📍 {{ r.address }}</span>
+                  {% endif %}
+                  {% if r.phone and r.phone != 'N/A' %}
+                    <span>📞 <a href="tel:{{ r.phone | replace(' ','') | replace('-','') | replace('(','') | replace(')','') }}">{{ r.phone }}</a></span>
+                  {% endif %}
+                  {% if r.website %}
+                    <span>🌐 <a href="{{ r.website }}" target="_blank" rel="noopener">website</a></span>
+                  {% endif %}
+                </div>
+              </div>
             </div>
-            {% if r.address and r.address != 'N/A' %}
-              <div class="addr">{{ r.address }}</div>
-            {% endif %}
           </td>
           <td>
             <span class="rating-val">★ {{ "%.1f"|format(r.rating) }}</span>
-            <span class="muted" style="font-size:0.78rem"> ({{ "{:,}".format(r.review_count|int) }})</span>
+            <span class="muted" style="font-size: 0.78rem"> ({{ "{:,}".format(r.review_count|int) }})</span>
           </td>
           <td>
             {% set pn = r.price_num|int %}
@@ -245,7 +483,7 @@
           <td>
             <div class="sbar">
               <div class="sbar-bg">
-                <div class="sbar-fill" style="width:{{ (r.score * 100)|round|int }}%"></div>
+                <div class="sbar-fill" style="--score-width: {{ (r.score * 100)|round|int }}%"></div>
               </div>
               <span class="sbar-num">{{ "%.3f"|format(r.score) }}</span>
             </div>
@@ -264,31 +502,164 @@
 <!-- ── CHARTS ─────────────────────────────────────────────────────── -->
 <div class="sec-head mt-4">
   <h2>Visual Comparison</h2>
-  <span>Top 5 restaurants</span>
+  <span>Peak hours + head-to-head</span>
 </div>
 
 <div class="charts-grid">
   <div class="chart-box">
-    <h3>Composite Score — Top 5</h3>
-    <img src="{{ url_for('chart', session_id=session_id) }}"
-         alt="Bar chart of top restaurant scores" />
+    <h3>📊 Estimated Peak Times — {{ final_pick.name }}</h3>
+    <p class="chart-sub">When this restaurant is typically busiest. Times are estimated from typical patterns; SerpAPI's Yelp engine doesn't expose live wait data.</p>
+    <iframe class="chart-frame"
+            src="{{ url_for('chart', session_id=session_id) }}"
+            title="Estimated peak business times"></iframe>
   </div>
   <div class="chart-box">
-    <h3>Head-to-Head Radar</h3>
-    <iframe class="radar-frame"
+    <h3>🎯 Head-to-Head Radar</h3>
+    <p class="chart-sub">Top 4 restaurants compared across rating, reviews, price fit, score, and value.</p>
+    <iframe class="chart-frame"
             src="{{ url_for('radar', session_id=session_id) }}"
             title="Radar comparison chart"></iframe>
   </div>
 </div>
 
 <!-- Actions -->
-<div class="text-center mt-4" style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+<div class="text-center mt-4" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
   <a href="{{ url_for('home') }}" class="btn btn-coral btn-lg">🔍 New Search</a>
   {% if current_user.is_authenticated %}
+    <a href="{{ url_for('for_you') }}" class="btn btn-ocean btn-lg">✨ For You Picks</a>
     <a href="{{ url_for('history') }}" class="btn btn-ghost btn-lg">📋 My History</a>
   {% else %}
     <a href="{{ url_for('register') }}" class="btn btn-ocean btn-lg">💾 Save Results — Sign Up</a>
   {% endif %}
 </div>
+
+<!-- Comparison data in JSON for JavaScript -->
+<script type="application/json" id="allResultsData">
+{{ all_results | tojson }}
+</script>
+
+<!-- ── GALLERY MODAL ────────────────────────────────────── -->
+<div class="modal-overlay" id="galleryModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeGalleryModal()">✕</button>
+    <img id="modalImage" class="modal-img" src="" alt="Full size image" />
+  </div>
+</div>
+
+<script>
+// Gallery Modal
+function openGalleryModal(imgUrl) {
+  const modal = document.getElementById('galleryModal');
+  const img = document.getElementById('modalImage');
+  img.src = imgUrl;
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeGalleryModal() {
+  const modal = document.getElementById('galleryModal');
+  modal.classList.remove('active');
+  document.body.style.overflow = 'auto';
+}
+
+document.getElementById('galleryModal').addEventListener('click', function(e) {
+  if (e.target === this) closeGalleryModal();
+});
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeGalleryModal();
+});
+
+// Restaurant Selection
+const selectedRestaurants = new Set();
+const maxSelections = 5;
+
+function updateSelection() {
+  selectedRestaurants.clear();
+  document.querySelectorAll('.restaurant-checkbox:checked').forEach(cb => {
+    selectedRestaurants.add(cb.dataset.name);
+  });
+  
+  updateSelectionUI();
+  
+  if (selectedRestaurants.size > maxSelections) {
+    const checkboxes = document.querySelectorAll('.restaurant-checkbox:checked');
+    checkboxes[checkboxes.length - 1].checked = false;
+    selectedRestaurants.delete(checkboxes[checkboxes.length - 1].dataset.name);
+    updateSelectionUI();
+    alert(`Maximum ${maxSelections} restaurants can be selected for comparison.`);
+  }
+}
+
+function updateSelectionUI() {
+  document.getElementById('selectionCount').textContent = selectedRestaurants.size;
+  const compareBtn = document.getElementById('compareBtn');
+  compareBtn.disabled = selectedRestaurants.size !== maxSelections;
+  
+  // Update row highlighting
+  document.querySelectorAll('.result-row').forEach(row => {
+    const checkbox = row.querySelector('.restaurant-checkbox');
+    if (checkbox.checked) {
+      row.classList.add('selected');
+    } else {
+      row.classList.remove('selected');
+    }
+  });
+  
+  // Update "Select All" checkbox state
+  const allCheckboxes = document.querySelectorAll('.restaurant-checkbox');
+  const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+  selectAllCheckbox.checked = allCheckboxes.length > 0 && selectedRestaurants.size === maxSelections;
+}
+
+function toggleSelectAll(checkbox) {
+  const allCheckboxes = document.querySelectorAll('.restaurant-checkbox');
+  const isChecked = checkbox.checked;
+  
+  if (isChecked) {
+    let count = 0;
+    for (let cb of allCheckboxes) {
+      if (count >= maxSelections) break;
+      cb.checked = true;
+      selectedRestaurants.add(cb.dataset.name);
+      count++;
+    }
+  } else {
+    allCheckboxes.forEach(cb => {
+      cb.checked = false;
+      selectedRestaurants.delete(cb.dataset.name);
+    });
+  }
+  
+  updateSelectionUI();
+}
+
+function compareSelected() {
+  const selected = Array.from(selectedRestaurants);
+  if (selected.length !== maxSelections) {
+    alert(`Please select exactly ${maxSelections} restaurants to compare.`);
+    return;
+  }
+  
+  // Get all restaurant data from the hidden JSON script tag
+  const allResultsJson = document.getElementById('allResultsData').textContent;
+  const allResults = JSON.parse(allResultsJson);
+  
+  // Create a map for quick lookup by name
+  const resultsMap = {};
+  allResults.forEach(r => {
+    resultsMap[r.name] = r;
+  });
+  
+  // Filter to selected restaurants
+  const selectedData = selected.map(name => resultsMap[name]).filter(Boolean);
+  
+  if (selectedData.length === maxSelections) {
+    // Store in session storage and redirect
+    sessionStorage.setItem('comparisonData', JSON.stringify(selectedData));
+    window.location.href = '{{ url_for("compare") }}';
+  }
+}
+</script>
 
 {% endblock %}

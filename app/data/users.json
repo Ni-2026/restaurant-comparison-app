@@ -110,6 +110,60 @@
         "top_pick": "Marugame Udon",
         "score": 0.875,
         "saved_at": "2026-05-05T12:37:15.991508"
+      },
+      {
+        "session_id": "2e0df242",
+        "cuisine": "japanese",
+        "location": "Honolulu, HI",
+        "budget": 1,
+        "top_pick": "Musubi Cafe Iyasume",
+        "score": 0.703,
+        "saved_at": "2026-05-07T12:43:27.061338"
+      },
+      {
+        "session_id": "d5c6533a",
+        "cuisine": "vietnamese",
+        "location": "Honolulu, HI",
+        "budget": 1,
+        "top_pick": "Le’s Banh Mi",
+        "score": 0.845,
+        "saved_at": "2026-05-07T15:31:39.911394"
+      },
+      {
+        "session_id": "d3d2c974",
+        "cuisine": "seafood",
+        "location": "Honolulu, HI",
+        "budget": 2,
+        "top_pick": "Ono Seafood",
+        "score": 0.786,
+        "saved_at": "2026-05-07T15:32:29.341833"
+      },
+      {
+        "session_id": "88e83734",
+        "cuisine": "chinese",
+        "location": "Honolulu, HI",
+        "budget": 2,
+        "top_pick": "Fun Station",
+        "score": 0.883,
+        "saved_at": "2026-05-07T15:34:50.675380"
+      },
+      {
+        "session_id": "3baec675",
+        "cuisine": "japanese",
+        "location": "Honolulu, HI",
+        "budget": 1,
+        "top_pick": "Musubi Cafe Iyasume",
+        "score": 0.703,
+        "saved_at": "2026-05-07T15:39:03.939657"
+      },
+      {
+        "session_id": "79248b41",
+        "cuisine": "japanese",
+        "location": "Honolulu, HI",
+        "budget": 1,
+        "top_pick": "Marugame Udon",
+        "score": 0.815,
+        "saved_at": "2026-05-07T15:45:59.389942"
       }
     ]
   },

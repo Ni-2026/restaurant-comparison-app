@@ -1,0 +1,270 @@
+{% extends "base.html" %}
+{% block title %}For You — Hawaii Eats{% endblock %}
+{% block head %}
+<style>
+  /* ── Hero ──────────────────────────────────────────────────── */
+  .fy-hero {
+    background: linear-gradient(135deg, var(--coral) 0%, #e0734f 100%);
+    border-radius: var(--r);
+    color: var(--white);
+    padding: 1.85rem 2.25rem;
+    margin-bottom: 1.75rem;
+    position: relative; overflow: hidden;
+  }
+  .fy-hero::after {
+    content: '✨';
+    position: absolute;
+    right: 1.5rem; top: 1rem;
+    font-size: 4.5rem;
+    opacity: 0.15;
+  }
+  .fy-hero .eyebrow {
+    font-size: 0.72rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1.8px;
+    opacity: 0.85; margin-bottom: 0.4rem;
+  }
+  .fy-hero h1 { color: var(--white); font-size: 1.85rem; line-height: 1.2; margin-bottom: 0.5rem; }
+  .fy-hero p { font-size: 0.95rem; opacity: 0.92; line-height: 1.5; max-width: 540px; }
+  .fy-hero .meta-row {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  .fy-chip {
+    background: rgba(255,255,255,0.2);
+    padding: 0.25rem 0.75rem;
+    border-radius: 14px;
+    font-size: 0.78rem;
+    font-weight: 500;
+  }
+  .fy-refresh {
+    margin-top: 1.1rem;
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: var(--white); color: var(--coral);
+    padding: 0.45rem 1rem; border-radius: 6px;
+    font-weight: 600; font-size: 0.85rem;
+    transition: transform 0.12s, background 0.15s;
+  }
+  .fy-refresh:hover { background: var(--coral-pale); transform: translateY(-1px); text-decoration: none; }
+
+  /* ── Pick cards ─────────────────────────────────────────────── */
+  .picks { display: flex; flex-direction: column; gap: 1rem; }
+  .pick-card {
+    background: var(--white);
+    border-radius: var(--r);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    transition: box-shadow 0.18s, transform 0.12s;
+  }
+  .pick-card:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+  .pick-image {
+    width: 180px; height: 180px;
+    background: var(--ocean-pale);
+    overflow: hidden; position: relative;
+  }
+  .pick-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .pick-image .ph {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3rem; opacity: 0.45; color: var(--ocean);
+  }
+  .pick-rank {
+    position: absolute; top: 8px; left: 8px;
+    background: var(--white); color: var(--ocean);
+    font-weight: 700; font-size: 0.78rem;
+    padding: 0.18rem 0.55rem; border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .pick-body { padding: 1.1rem 1.4rem; display: flex; flex-direction: column; }
+  .pick-name {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.2rem; font-weight: 700;
+    color: var(--text); margin-bottom: 0.3rem;
+    line-height: 1.25;
+  }
+  .pick-name a { color: var(--text); }
+  .pick-name a:hover { color: var(--ocean); text-decoration: none; }
+  .pick-row {
+    font-size: 0.85rem; color: var(--muted);
+    display: flex; flex-wrap: wrap; gap: 0.7rem;
+    margin-bottom: 0.45rem;
+  }
+  .pick-row .rval { color: #c47d00; font-weight: 700; }
+  .pick-contact {
+    font-size: 0.8rem; color: var(--muted);
+    display: flex; flex-wrap: wrap; gap: 0.6rem;
+    margin-bottom: 0.6rem;
+  }
+  .pick-contact a { color: var(--muted); }
+  .pick-contact a:hover { color: var(--ocean); }
+  .pick-reason {
+    background: var(--ocean-pale);
+    color: var(--ocean);
+    border-radius: 6px;
+    padding: 0.4rem 0.7rem;
+    font-size: 0.83rem;
+    font-weight: 500;
+    margin-bottom: 0.7rem;
+    align-self: flex-start;
+  }
+  .pick-actions { margin-top: auto; display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .pick-btn {
+    background: var(--ocean); color: var(--white);
+    padding: 0.45rem 1rem; border-radius: 6px;
+    font-weight: 600; font-size: 0.82rem;
+  }
+  .pick-btn:hover { background: var(--ocean-mid); text-decoration: none; }
+  .pick-btn.ghost {
+    background: transparent; color: var(--ocean);
+    border: 1.5px solid var(--ocean);
+  }
+  .pick-btn.ghost:hover { background: var(--ocean-pale); }
+
+  /* ── Empty state ────────────────────────────────────────────── */
+  .fy-empty {
+    text-align: center; padding: 3.5rem 1rem;
+    background: var(--white); border-radius: var(--r);
+    box-shadow: var(--shadow-sm);
+  }
+  .fy-empty .icon { font-size: 3.5rem; display: block; margin-bottom: 0.85rem; }
+  .fy-empty h2 { margin-bottom: 0.5rem; }
+  .fy-empty p { color: var(--muted); max-width: 460px; margin: 0 auto 1.5rem; line-height: 1.55; }
+
+  /* ── Action row ────────────────────────────────────────────── */
+  .fy-actions {
+    text-align: center;
+    margin-top: 1.75rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .fy-actions a {
+    display: inline-block;
+  }
+
+  @media(max-width:620px){
+    .pick-card { grid-template-columns: 1fr; }
+    .pick-image { width: 100%; height: 200px; }
+    .fy-hero h1 { font-size: 1.55rem; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="fy-hero">
+  <p class="eyebrow">✨ Curated for {{ user.username }}</p>
+  <h1>Picks made just for you</h1>
+  {% if preferences.total_searches > 0 %}
+    <p>
+      Based on your <strong>{{ preferences.total_searches }}</strong>
+      past search{{ 'es' if preferences.total_searches != 1 else '' }} —
+      we noticed you tend to look for
+      {% for c in preferences.top_cuisines %}
+        <strong>{{ c.title() }}</strong>{% if not loop.last %}, {% endif %}
+      {% endfor %}
+      around budget
+      <strong>{{ ['$','$$','$$$','$$$$'][preferences.avg_budget-1] }}</strong>.
+      Here are some new spots we think you'll like — refreshes every login.
+    </p>
+    <div class="meta-row">
+      {% for c in preferences.top_cuisines %}
+        <span class="fy-chip">🍽 {{ c.title() }}</span>
+      {% endfor %}
+      {% for l in preferences.top_locations %}
+        <span class="fy-chip">📍 {{ l }}</span>
+      {% endfor %}
+      {% if generated_at %}
+        <span class="fy-chip">⏱ Generated {{ generated_at }}</span>
+      {% endif %}
+    </div>
+    <a class="fy-refresh" href="{{ url_for('for_you_refresh') }}">🔄 Shuffle picks</a>
+  {% else %}
+    <p>Run a few searches first — once you do, we'll spot patterns and recommend new spots you'll love.</p>
+  {% endif %}
+</div>
+
+{% if error %}
+  <div class="fy-empty">
+    <span class="icon">🍜</span>
+    <h2>{% if preferences.total_searches == 0 %}No history yet{% else %}No picks right now{% endif %}</h2>
+    <p>{{ error }}</p>
+    <a href="{{ url_for('home') }}" class="btn btn-coral">🔍 Start Your First Search</a>
+  </div>
+{% elif picks %}
+  <div class="picks">
+    {% for p in picks %}
+      <div class="pick-card">
+        <div class="pick-image">
+          <span class="pick-rank">#{{ loop.index }}</span>
+          {% if p.image_url %}
+            <img src="{{ p.image_url }}" alt="{{ p.name }}"
+                 onerror="this.outerHTML='<div class=&quot;ph&quot;>🍽️</div>'" />
+          {% else %}
+            <div class="ph">🍽️</div>
+          {% endif %}
+        </div>
+        <div class="pick-body">
+          <div class="pick-name">
+            {% if p.yelp_url %}
+              <a href="{{ p.yelp_url }}" target="_blank" rel="noopener">{{ p.name }}</a>
+            {% else %}{{ p.name }}{% endif %}
+          </div>
+          <div class="pick-row">
+            {% if p.rating %}
+              <span class="rval">★ {{ "%.1f"|format(p.rating) }}</span>
+            {% endif %}
+            {% if p.review_count %}
+              <span>💬 {{ "{:,}".format(p.review_count) }} reviews</span>
+            {% endif %}
+            {% if p.price and p.price != 'N/A' %}
+              <span>💵 {{ p.price }}</span>
+            {% endif %}
+            {% if p.score %}
+              <span>🏆 Score {{ "%.2f"|format(p.score) }}</span>
+            {% endif %}
+          </div>
+          <div class="pick-contact">
+            {% if p.address and p.address != 'N/A' %}
+              <span>📍 {{ p.address }}</span>
+            {% endif %}
+            {% if p.phone and p.phone != 'N/A' %}
+              <span>📞 <a href="tel:{{ p.phone | replace(' ','') | replace('-','') | replace('(','') | replace(')','') }}">{{ p.phone }}</a></span>
+            {% endif %}
+            {% if p.website and p.website %}
+              <span>🌐 <a href="{{ p.website }}" target="_blank" rel="noopener">website</a></span>
+            {% endif %}
+          </div>
+          {% if p.match_reason %}
+            <div class="pick-reason">💡 {{ p.match_reason }}</div>
+          {% endif %}
+          <div class="pick-actions">
+            {% if p.yelp_url and p.yelp_url %}
+              <a class="pick-btn" href="{{ p.yelp_url }}" target="_blank" rel="noopener">View on Yelp →</a>
+            {% endif %}
+            {% if p.website and p.website %}
+              <a class="pick-btn ghost" href="{{ p.website }}" target="_blank" rel="noopener">Website</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="fy-actions">
+    <a href="{{ url_for('home') }}" class="btn btn-coral">🔍 New Search</a>
+    <a href="{{ url_for('history') }}" class="btn btn-ghost">📋 View History</a>
+  </div>
+{% else %}
+  <div class="fy-empty">
+    <span class="icon">🌴</span>
+    <h2>Nothing to recommend yet</h2>
+    <p>Try running a search to build up your taste profile.</p>
+    <a href="{{ url_for('home') }}" class="btn btn-coral">🔍 Start Your First Search</a>
+  </div>
+{% endif %}
+
+{% endblock %}

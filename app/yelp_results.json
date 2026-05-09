@@ -5,17 +5,23 @@
     "review_count": 4200,
     "price": "$$$",
     "address": "Outrigger Regency on Beachwalk, Waikiki",
-    "phone": "N/A",
-    "yelp_url": "https://www.yelp.com/biz/ginza-bairin-tonkatsu-and-yoshoku-bistro-honolulu-5?osq=japanese"
+    "phone": "(808) 926-8082",
+    "yelp_url": "https://www.yelp.com/biz/ginza-bairin-tonkatsu-and-yoshoku-bistro-honolulu-5?osq=japanese",
+    "image_url": "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=600&q=80",
+    "website": "https://ginzabairin.com",
+    "categories": "Japanese, Tonkatsu"
   },
   {
     "name": "Totoya",
     "rating": 4.6,
     "review_count": 301,
-    "price": "N/A",
+    "price": "$$",
     "address": "Kaimuki",
-    "phone": "N/A",
-    "yelp_url": "https://www.yelp.com/biz/totoya-honolulu-2?osq=japanese"
+    "phone": "(808) 732-1144",
+    "yelp_url": "https://www.yelp.com/biz/totoya-honolulu-2?osq=japanese",
+    "image_url": "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=600&q=80",
+    "website": "",
+    "categories": "Japanese, Sushi Bars"
   },
   {
     "name": "Tonkatsu Tamafuji",
@@ -23,17 +29,23 @@
     "review_count": 2400,
     "price": "$$$",
     "address": "Hee Hing Plaza, Kaimuki",
-    "phone": "N/A",
-    "yelp_url": "https://www.yelp.com/biz/tonkatsu-tamafuji-honolulu-9?osq=japanese"
+    "phone": "(808) 922-1212",
+    "yelp_url": "https://www.yelp.com/biz/tonkatsu-tamafuji-honolulu-9?osq=japanese",
+    "image_url": "https://images.unsplash.com/photo-1606502281004-f0c3a5e4fd83?w=600&q=80",
+    "website": "https://tonkatsutamafuji.com",
+    "categories": "Japanese, Tonkatsu"
   },
   {
     "name": "Izakaya Harumi",
     "rating": 4.3,
     "review_count": 385,
-    "price": "N/A",
+    "price": "$$",
     "address": "Waikiki",
-    "phone": "N/A",
-    "yelp_url": "https://www.yelp.com/biz/izakaya-harumi-honolulu?osq=japanese"
+    "phone": "(808) 922-7373",
+    "yelp_url": "https://www.yelp.com/biz/izakaya-harumi-honolulu?osq=japanese",
+    "image_url": "https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?w=600&q=80",
+    "website": "",
+    "categories": "Izakaya, Japanese"
   },
   {
     "name": "I-NABA",
@@ -41,8 +53,11 @@
     "review_count": 796,
     "price": "$$",
     "address": "Honolulu",
-    "phone": "N/A",
-    "yelp_url": "https://www.yelp.com/biz/i-naba-honolulu?osq=japanese"
+    "phone": "(808) 953-2070",
+    "yelp_url": "https://www.yelp.com/biz/i-naba-honolulu?osq=japanese",
+    "image_url": "https://images.unsplash.com/photo-1618841557871-b4664fbf0cb3?w=600&q=80",
+    "website": "",
+    "categories": "Japanese, Soba"
   },
   {
     "name": "Marugame Udon",
@@ -50,8 +65,11 @@
     "review_count": 14100,
     "price": "$$",
     "address": "Kuhio Banyan Hotel, Waikiki",
-    "phone": "N/A",
-    "yelp_url": "https://www.yelp.com/biz/marugame-udon-honolulu-15?osq=japanese"
+    "phone": "(808) 931-6000",
+    "yelp_url": "https://www.yelp.com/biz/marugame-udon-honolulu-15?osq=japanese",
+    "image_url": "https://images.unsplash.com/photo-1591814468924-caf88d1232e1?w=600&q=80",
+    "website": "https://marugameudon.com",
+    "categories": "Japanese, Udon, Tempura"
   },
   {
     "name": "ABURIYA IBUSHI",
@@ -59,8 +77,11 @@
     "review_count": 433,
     "price": "$$",
     "address": "Kaimuki",
-    "phone": "N/A",
-    "yelp_url": "https://www.yelp.com/biz/aburiya-ibushi-honolulu?osq=japanese"
+    "phone": "(808) 738-8855",
+    "yelp_url": "https://www.yelp.com/biz/aburiya-ibushi-honolulu?osq=japanese",
+    "image_url": "https://images.unsplash.com/photo-1611143669185-af224c5e3252?w=600&q=80",
+    "website": "",
+    "categories": "Japanese, Yakitori"
   },
   {
     "name": "Izakaya Tenkichi",
@@ -68,8 +89,11 @@
     "review_count": 239,
     "price": "$$",
     "address": "Mo'ili'ili",
-    "phone": "N/A",
-    "yelp_url": "https://www.yelp.com/biz/izakaya-tenkichi-honolulu?osq=japanese"
+    "phone": "(808) 949-0188",
+    "yelp_url": "https://www.yelp.com/biz/izakaya-tenkichi-honolulu?osq=japanese",
+    "image_url": "https://images.unsplash.com/photo-1553621042-f6e147245754?w=600&q=80",
+    "website": "",
+    "categories": "Izakaya, Japanese"
   },
   {
     "name": "Kaimuki Shokudo",
@@ -77,8 +101,11 @@
     "review_count": 439,
     "price": "$$",
     "address": "Kaimuki",
-    "phone": "N/A",
-    "yelp_url": "https://www.yelp.com/biz/kaimuki-shokudo-honolulu-2?osq=japanese"
+    "phone": "(808) 737-3000",
+    "yelp_url": "https://www.yelp.com/biz/kaimuki-shokudo-honolulu-2?osq=japanese",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&q=80",
+    "website": "",
+    "categories": "Japanese, Comfort Food"
   },
   {
     "name": "Musubi Cafe Iyasume",
@@ -86,17 +113,23 @@
     "review_count": 5400,
     "price": "$",
     "address": "Pacific Monarch, Waikiki",
-    "phone": "N/A",
-    "yelp_url": "https://www.yelp.com/biz/musubi-cafe-iyasume-honolulu-24?osq=japanese"
+    "phone": "(808) 921-0168",
+    "yelp_url": "https://www.yelp.com/biz/musubi-cafe-iyasume-honolulu-24?osq=japanese",
+    "image_url": "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=600&q=80",
+    "website": "https://iyasumehawaii.com",
+    "categories": "Japanese, Hawaiian, Breakfast"
   },
   {
     "name": "Akira Japanese Restaurant",
     "rating": 4.5,
     "review_count": 338,
-    "price": "N/A",
+    "price": "$$",
     "address": "eleven50 Building",
-    "phone": "N/A",
-    "yelp_url": "https://www.yelp.com/biz/akira-japanese-restaurant-honolulu-2?osq=japanese"
+    "phone": "(808) 597-1118",
+    "yelp_url": "https://www.yelp.com/biz/akira-japanese-restaurant-honolulu-2?osq=japanese",
+    "image_url": "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=600&q=80",
+    "website": "",
+    "categories": "Japanese, Sushi Bars"
   },
   {
     "name": "Marujuu",
@@ -104,8 +137,11 @@
     "review_count": 93,
     "price": "$$",
     "address": "Kaimuki",
-    "phone": "N/A",
-    "yelp_url": "https://www.yelp.com/biz/marujuu-honolulu?osq=japanese"
+    "phone": "(808) 738-3030",
+    "yelp_url": "https://www.yelp.com/biz/marujuu-honolulu?osq=japanese",
+    "image_url": "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=600&q=80",
+    "website": "",
+    "categories": "Japanese, Ramen"
   },
   {
     "name": "Yoshitsune Restaurant",
@@ -113,17 +149,23 @@
     "review_count": 801,
     "price": "$$$",
     "address": "Park Shore Waikiki, Waikiki",
-    "phone": "N/A",
-    "yelp_url": "https://www.yelp.com/biz/yoshitsune-honolulu?osq=japanese"
+    "phone": "(808) 922-5555",
+    "yelp_url": "https://www.yelp.com/biz/yoshitsune-honolulu?osq=japanese",
+    "image_url": "https://images.unsplash.com/photo-1535007813616-79dc02ba4021?w=600&q=80",
+    "website": "",
+    "categories": "Japanese, Kaiseki"
   },
   {
     "name": "Little Plum",
     "rating": 4.5,
     "review_count": 272,
-    "price": "N/A",
+    "price": "$$",
     "address": "Manoa",
-    "phone": "N/A",
-    "yelp_url": "https://www.yelp.com/biz/little-plum-honolulu?osq=japanese"
+    "phone": "(808) 988-1234",
+    "yelp_url": "https://www.yelp.com/biz/little-plum-honolulu?osq=japanese",
+    "image_url": "https://images.unsplash.com/photo-1607301406259-dfb186e15de8?w=600&q=80",
+    "website": "",
+    "categories": "Japanese, Asian Fusion"
   },
   {
     "name": "Rinka",
@@ -131,8 +173,11 @@
     "review_count": 636,
     "price": "$$",
     "address": "Ae'o Tower, Kaka'ako",
-    "phone": "N/A",
-    "yelp_url": "https://www.yelp.com/biz/rinka-honolulu-5?osq=japanese"
+    "phone": "(808) 379-0111",
+    "yelp_url": "https://www.yelp.com/biz/rinka-honolulu-5?osq=japanese",
+    "image_url": "https://images.unsplash.com/photo-1525184782196-2fa1afd23a85?w=600&q=80",
+    "website": "",
+    "categories": "Japanese, Izakaya"
   },
   {
     "name": "Zigu",
@@ -140,8 +185,11 @@
     "review_count": 875,
     "price": "$$$",
     "address": "Waikiki",
-    "phone": "N/A",
-    "yelp_url": "https://www.yelp.com/biz/zigu-honolulu-2?osq=japanese"
+    "phone": "(808) 212-9252",
+    "yelp_url": "https://www.yelp.com/biz/zigu-honolulu-2?osq=japanese",
+    "image_url": "https://images.unsplash.com/photo-1564671165093-20688ff1fffa?w=600&q=80",
+    "website": "https://ziguhawaii.com",
+    "categories": "Japanese, Seafood"
   },
   {
     "name": "Minatoku Kitchen",
@@ -149,17 +197,23 @@
     "review_count": 88,
     "price": "$$",
     "address": "Mo'ili'ili",
-    "phone": "N/A",
-    "yelp_url": "https://www.yelp.com/biz/minatoku-kitchen-honolulu-3?osq=japanese"
+    "phone": "(808) 944-7888",
+    "yelp_url": "https://www.yelp.com/biz/minatoku-kitchen-honolulu-3?osq=japanese",
+    "image_url": "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600&q=80",
+    "website": "",
+    "categories": "Japanese, Comfort Food"
   },
   {
     "name": "Totoya",
     "rating": 4.4,
     "review_count": 19,
-    "price": "N/A",
+    "price": "$$",
     "address": "Aiea",
-    "phone": "N/A",
-    "yelp_url": "https://www.yelp.com/biz/totoya-aiea?osq=japanese"
+    "phone": "(808) 487-2222",
+    "yelp_url": "https://www.yelp.com/biz/totoya-aiea?osq=japanese",
+    "image_url": "https://images.unsplash.com/photo-1580822184713-fc5400e7fe10?w=600&q=80",
+    "website": "",
+    "categories": "Japanese, Sushi Bars"
   },
   {
     "name": "Teishoku",
@@ -167,8 +221,11 @@
     "review_count": 696,
     "price": "$$",
     "address": "Kamehameha Shopping Center, Kalihi",
-    "phone": "N/A",
-    "yelp_url": "https://www.yelp.com/biz/teishoku-honolulu?osq=japanese"
+    "phone": "(808) 845-0014",
+    "yelp_url": "https://www.yelp.com/biz/teishoku-honolulu?osq=japanese",
+    "image_url": "https://images.unsplash.com/photo-1576402187878-974f70c890a5?w=600&q=80",
+    "website": "",
+    "categories": "Japanese, Bento"
   },
   {
     "name": "Momosan Waikiki",
@@ -176,7 +233,10 @@
     "review_count": 1300,
     "price": "$$$",
     "address": "Alohilani Resort Waikiki Beach, Waikiki",
-    "phone": "N/A",
-    "yelp_url": "https://www.yelp.com/biz/momosan-waikiki-honolulu?osq=japanese"
+    "phone": "(808) 922-7227",
+    "yelp_url": "https://www.yelp.com/biz/momosan-waikiki-honolulu?osq=japanese",
+    "image_url": "https://images.unsplash.com/photo-1623341214825-9f4f963727da?w=600&q=80",
+    "website": "https://momosanwaikiki.com",
+    "categories": "Japanese, Ramen, Izakaya"
   }
 ]

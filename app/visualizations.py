@@ -1,16 +1,11 @@
 # visualizations.py
 # Sara Bautista — ITM352 Restaurant Comparison App
 #
-# Generates two chart types from a scored restaurant DataFrame:
-#   generate_bar_chart()   — horizontal bar chart (top-N scores) → .png
-#   generate_radar_chart() — multi-axis radar chart (head-to-head) → .html
+# UPDATED: Replaced the composite-score bar chart with a Peak Business Times
+# chart (Plotly HTML) for the AI's top pick. The radar chart is unchanged.
 
 import os
 import pandas as pd
-import matplotlib
-matplotlib.use("Agg")  # non-interactive backend — safe for Flask (no display needed)
-import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
 import numpy as np
 import plotly.graph_objects as go
 
@@ -22,93 +17,107 @@ def _ensure_dir():
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# BAR CHART
+# PEAK BUSINESS TIMES CHART (replaces the old bar chart)
 # ─────────────────────────────────────────────────────────────────────────────
 
-def generate_bar_chart(df: pd.DataFrame, top_n: int = 5,
-                        title: str = "Top Restaurants by Score",
-                        save_path: str = None) -> str:
+def generate_peak_times_chart(restaurant_name: str,
+                               peak_data: dict,
+                               save_path: str = None) -> str:
     """
-    Horizontal bar chart of composite scores for the top N restaurants.
-    Bars are color-coded by price tier so budget is visible at a glance.
+    Renders an interactive Plotly chart showing estimated busy levels by hour
+    for a single restaurant — modeled on Google Maps' "Popular Times" widget.
 
     Args:
-        df        (pd.DataFrame): Scored and ranked restaurant DataFrame
-        top_n     (int):          Number of restaurants to show
-        title     (str):          Chart title
-        save_path (str):          If given, saves to this path; otherwise auto-names
+        restaurant_name (str):  Name shown in chart title
+        peak_data (dict):       Output of scraper.estimate_peak_times()
+        save_path (str):        Output path (.html); auto-named if not provided
 
     Returns:
-        str: Absolute path to the saved .png, or "" on failure
+        str: Path to the saved .html file, or "" if no data
     """
-    if df.empty:
-        print("[Charts] Bar chart skipped: empty DataFrame.")
+    if not peak_data or "busy_by_hour" not in peak_data:
+        print("[Charts] Peak-times chart skipped: no data.")
         return ""
 
     _ensure_dir()
-    data = df.head(top_n).copy()
 
-    # Color map: each price tier gets a distinct color
-    price_colors = {"$": "#4CAF50", "$$": "#2196F3", "$$$": "#FF9800",
-                    "$$$$": "#F44336", "N/A": "#9E9E9E"}
-    colors = [price_colors.get(str(p), "#9E9E9E") for p in data["price"]]
+    busy = peak_data["busy_by_hour"]
+    peak_hour = peak_data.get("peak_hour")
+    avg_wait  = peak_data.get("avg_wait_min", 0)
+    is_est    = peak_data.get("is_estimated", True)
 
-    fig, ax = plt.subplots(figsize=(9, max(4, top_n * 0.85)))
+    hours = sorted(busy.keys())
+    levels = [busy[h] for h in hours]
 
-    # Reverse so rank 1 appears at the top of the chart
-    bars = ax.barh(data["name"][::-1], data["score"][::-1],
-                   color=colors[::-1], edgecolor="white", linewidth=0.8, height=0.6)
+    # Hour labels: 11 → "11a", 12 → "12p", 13 → "1p", etc.
+    def fmt_hour(h):
+        if h == 12:  return "12p"
+        if h < 12:   return f"{h}a"
+        return f"{h - 12}p"
 
-    # Score label to the right of each bar
-    for bar, score in zip(bars, data["score"][::-1]):
-        ax.text(bar.get_width() + 0.008, bar.get_y() + bar.get_height() / 2,
-                f"{score:.3f}", va="center", ha="left", fontsize=9, color="#444")
+    labels = [fmt_hour(h) for h in hours]
 
-    ax.set_xlim(0, 1.14)
-    ax.set_xlabel("Composite Score  (rating 50% · reviews 30% · price fit 20%)",
-                  fontsize=9, color="#555")
-    ax.set_title(title, fontsize=13, fontweight="bold", pad=12)
-    ax.spines[["top", "right", "left"]].set_visible(False)
-    ax.tick_params(left=False)
-    ax.xaxis.grid(True, linestyle="--", alpha=0.4)
-    ax.set_axisbelow(True)
+    # Color: peak hour highlighted in coral, rest in teal
+    bar_colors = [
+        "#c95032" if h == peak_hour else "#1a7a8f"
+        for h in hours
+    ]
 
-    # Price legend — escape $ for matplotlib's math parser
-    label_map = {"$": r"\$", "$$": r"\$\$", "$$$": r"\$\$\$", "$$$$": r"\$\$\$\$"}
-    patches = [mpatches.Patch(color=c, label=label_map.get(p, p))
-               for p, c in price_colors.items() if p != "N/A"]
-    ax.legend(handles=patches, title="Price Tier", loc="lower right",
-              fontsize=8, title_fontsize=8)
+    fig = go.Figure()
+    fig.add_trace(go.Bar(
+        x=labels,
+        y=levels,
+        marker=dict(color=bar_colors, line=dict(width=0)),
+        text=[f"{v}%" for v in levels],
+        textposition="outside",
+        textfont=dict(size=9, color="#666"),
+        hovertemplate="<b>%{x}</b><br>%{y}% busy<extra></extra>",
+    ))
 
-    plt.tight_layout()
+    # Title with the wait-time + transparency note
+    est_note = "Estimated from typical patterns" if is_est else ""
+    title_html = (
+        f"<b>{restaurant_name}</b><br>"
+        f"<span style='font-size:11px;color:#666;'>"
+        f"Peak: {peak_data.get('peak_label','')} "
+        f"&middot; ~{avg_wait} min wait at peak"
+        f"{' &middot; ' + est_note if est_note else ''}"
+        f"</span>"
+    )
+
+    fig.update_layout(
+        title=dict(text=title_html, font=dict(size=14, family="Inter")),
+        xaxis=dict(title="", tickfont=dict(size=10), showgrid=False),
+        yaxis=dict(
+            title="Busy %",
+            range=[0, 115],
+            tickfont=dict(size=9),
+            gridcolor="#eee",
+            zeroline=False,
+        ),
+        showlegend=False,
+        plot_bgcolor="white",
+        paper_bgcolor="white",
+        margin=dict(t=80, b=40, l=50, r=20),
+        height=420,
+        bargap=0.25,
+    )
 
     if not save_path:
-        save_path = os.path.join(CHARTS_DIR, "bar_chart.png")
-    plt.savefig(save_path, dpi=150, bbox_inches="tight")
-    plt.close()
-    print(f"[Charts] Bar chart → {save_path}")
+        save_path = os.path.join(CHARTS_DIR, "peak_times.html")
+    fig.write_html(save_path, include_plotlyjs="cdn")
+    print(f"[Charts] Peak-times chart → {save_path}")
     return save_path
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# RADAR CHART
+# RADAR CHART (unchanged)
 # ─────────────────────────────────────────────────────────────────────────────
 
 def generate_radar_chart(df: pd.DataFrame, restaurant_names: list = None,
                           save_path: str = None) -> str:
     """
-    Interactive Plotly radar chart comparing up to 4 restaurants across 5 axes:
-      Rating · Review Volume · Price Fit · Composite Score · Value
-
-    Saved as a self-contained HTML file with Plotly CDN — opens in any browser.
-
-    Args:
-        df               (pd.DataFrame): Scored DataFrame
-        restaurant_names (list[str]):    Names to compare; defaults to top 4
-        save_path        (str):          Output path; auto-named if not given
-
-    Returns:
-        str: Absolute path to the saved .html, or "" on failure
+    Interactive Plotly radar chart comparing up to 4 restaurants across 5 axes.
     """
     if df.empty:
         print("[Charts] Radar chart skipped: empty DataFrame.")
@@ -123,11 +132,9 @@ def generate_radar_chart(df: pd.DataFrame, restaurant_names: list = None,
 
     axes = ["Rating", "Review Volume", "Price Fit", "Composite Score", "Value"]
 
-    # Normalize review count to 0-1 for the radar display
     max_rev = df["review_count"].max() or 1
     subset["_rev_display"] = subset["review_count"] / max_rev
 
-    # Value = review volume / price tier  (high reviews, low cost = best value)
     subset["_value"] = subset.apply(
         lambda r: r["_rev_display"] / max(r["price_num"], 1), axis=1)
     v_max = subset["_value"].max() or 1
@@ -144,7 +151,6 @@ def generate_radar_chart(df: pd.DataFrame, restaurant_names: list = None,
             float(row["score"]),
             float(row["_value"]),
         ]
-        # Close the polygon by repeating the first value
         fig.add_trace(go.Scatterpolar(
             r=vals + [vals[0]],
             theta=axes + [axes[0]],
@@ -180,22 +186,33 @@ def generate_radar_chart(df: pd.DataFrame, restaurant_names: list = None,
 # ─────────────────────────────────────────────────────────────────────────────
 
 def generate_all_charts(df: pd.DataFrame, session_id: str,
-                         top_n: int = 5, cuisine: str = "",
+                         top_pick_name: str = "",
+                         peak_data: dict = None,
+                         cuisine: str = "",
                          location: str = "") -> dict:
     """
-    Generates both charts with session-scoped filenames so concurrent searches
-    don't overwrite each other.
+    Generates both charts with session-scoped filenames.
+
+    Args:
+        df              (DataFrame):  Scored & ranked restaurants
+        session_id      (str):        Used to namespace output filenames
+        top_pick_name   (str):        Restaurant name for the peak-times chart
+        peak_data       (dict):       Output of scraper.estimate_peak_times()
+        cuisine, location (str):      Used for the chart title
 
     Returns:
-        dict: {"bar": path_to_png, "radar": path_to_html}
+        dict: {"peak": path_to_html, "radar": path_to_html}
     """
-    label    = f"Top {top_n} {cuisine.title()} Restaurants — {location}" if cuisine else "Top Restaurants"
-    bar_path = generate_bar_chart(
-        df, top_n=top_n, title=label,
-        save_path=os.path.join(CHARTS_DIR, f"bar_{session_id}.png"),
-    )
+    peak_path = ""
+    if peak_data and top_pick_name:
+        peak_path = generate_peak_times_chart(
+            top_pick_name,
+            peak_data,
+            save_path=os.path.join(CHARTS_DIR, f"peak_{session_id}.html"),
+        )
+
     radar_path = generate_radar_chart(
         df,
         save_path=os.path.join(CHARTS_DIR, f"radar_{session_id}.html"),
     )
-    return {"bar": bar_path, "radar": radar_path}
+    return {"peak": peak_path, "radar": radar_path}
